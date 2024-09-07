@@ -1,7 +1,7 @@
 {
-	"name": "react-hello-webapp",
+	"name": "gym-manager",
 	"engines": {
-		"node": "16.x"
+		"node": "20.x"
 	},
 	"version": "1.0.1",
 	"description": "",
@@ -11,17 +11,17 @@
 		"build": "webpack --config webpack.prod.js"
 	},
 	"author": {
-		"name": "Alejandro Sanchez",
-		"url": "http://alesanchezr.com/"
+		"name": "GP-IL-JL-NF",
+		"url": "http://.com/"
 	},
 	"contributors": [
 		{
-			"name": "Alejandro Sanchez",
-			"url": "http://alesanchezr.com/"
+			"name": "GP-IL-JL-NF",
+			"url": "http://"
 		},
 		{
 			"name": "Ignacio Cordoba",
-			"url": "http://github.com/nachovz"
+			"url": "http://github.com/nacho"
 		}
 	],
 	"license": "ISC",
