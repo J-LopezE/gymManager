@@ -242,13 +242,15 @@ def create_discipline():
     user_data = get_jwt_identity()
     name = body.get("name", None)
     description = body.get("description", None)
-    if name is None or description is None:
+    schedule = body.get("schedule", None)
+    if name is None or description is None or schedule is None:
         return jsonify({"error": "todos los campos son requeridos"}), 400
     try:
         new_discipline = Discipline(
             user_id = user_data["id"],
             name = name,
             description = description,
+            schedule = schedule,
         )
         db.session.add(new_discipline)
         db.session.commit()
@@ -269,10 +271,10 @@ def get_all_disciplines():
         {
             "id": discipline.id,
             "user_id": discipline.user_id,
-            "type": discipline.type,
-            "start_date": discipline.start_date,
-            "end_date": discipline.end_date,
-            "member_id": discipline.member_id,
+            "name": discipline.name,
+            "description": discipline.description,
+            "schedule": discipline.schedule,
+            "membersip_id": discipline.membership_id,
         } for discipline in disciplines
     ]
     return jsonify(disciplines_data), 200
