@@ -100,6 +100,7 @@ class Discipline(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(120), unique=False, nullable=False)
     description = db.Column(db.String(120), unique=False, nullable=False)
+    schedule = db.Column(db.String(80), unique=False, nullable=False)
 
     membership_id = db.Column(db.Integer, db.ForeignKey('membership.id'), nullable=False)
 
@@ -112,5 +113,6 @@ class Discipline(db.Model):
             "user_id": self.user_id,
             "name": self.name,
             "description": self.description,
+            "schedule": self.schedule,
             "membersip_id": self.membership_id,
         }
