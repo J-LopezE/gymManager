@@ -8,7 +8,7 @@ const SideBar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sidebar text-center">
+    <div className="sidebar text-center mt-5">
       <img
         className="m-4"
         src={Logo}
