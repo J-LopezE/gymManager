@@ -145,19 +145,6 @@ export const FormMembers = () => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="imc" className="form-label">
-            IMC
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="imc"
-            placeholder="IMC"
-            readOnly
-          />
-        </div>
-
-        <div className="mb-3">
           <label htmlFor="objetivos" className="form-label">
             Objetivos
           </label>
@@ -234,36 +221,6 @@ export const FormMembers = () => {
             name="birthdate"
             onChange={(e) => handleChange(e)}
           />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="tipoMembresia" className="form-label">
-            Tipo de Membresía
-          </label>
-          <select className="form-select" id="tipoMembresia">
-            <option selected>Selecciona un tipo de membresía</option>
-            <option value="basic">Básica</option>
-            <option value="premium">Premium</option>
-            <option value="vip">VIP</option>
-          </select>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="fechaInicioMembresia" className="form-label">
-            Fecha de Inicio de Membresía
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            id="fechaInicioMembresia"
-          />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="fechaExpiracion" className="form-label">
-            Fecha de Expiración
-          </label>
-          <input type="date" className="form-control" id="fechaExpiracion" />
         </div>
 
         <div className="mb-3">
