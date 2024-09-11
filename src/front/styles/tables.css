@@ -1,0 +1,68 @@
+.members-container {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: flex-start;
+  margin-top: 170px;
+  margin-right: 30px;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+}
+
+.create-members-container {
+  margin-bottom: 5px; /* Espacio entre el componente CreateMembers y la tabla */
+}
+
+.table-container {
+  width: 100%;
+  max-width: 1200px; /* Ajusta el ancho máximo según sea necesario */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Fondo blanco con opacidad para resaltar la tabla sobre la imagen */
+  border-radius: 8px; /* Opcional: Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Opcional: Sombra para dar profundidad */
+  padding: 20px;
+}
+
+.table {
+  width: 100%; /* Ajusta el ancho de la tabla si es necesario */
+}
+
+.table td,
+.table th {
+  text-align: center; /* Alinea el texto al centro */
+}
+
+.table td {
+  vertical-align: middle; /* Alinea verticalmente el contenido de las celdas */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination button {
+  border: none;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  margin: 0 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Opcional: estilos para botones activos si decides añadir esa funcionalidad más adelante */
+.pagination .active {
+  background-color: #0056b3;
+}

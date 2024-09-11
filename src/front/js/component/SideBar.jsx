@@ -1,3 +1,5 @@
+
+import React, { useEffect } from "react";
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
@@ -37,13 +39,13 @@ const SideBar = () => {
             className="sidebar-button m-2 mt-3"
             onClick={() => navigate("/members")}
           >
-            <i className="fas fa-users"></i> Lista de Miembros
+            <i className="fas fa-users"></i> Miembros
           </button>
         </li>
         <li>
           <button
             className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/services")}
+            onClick={() => navigate("/subscription")}
           >
             <i className="fas fa-clipboard-list"></i> Membresías
           </button>
@@ -51,9 +53,9 @@ const SideBar = () => {
         <li>
           <button
             className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/contact")}
+            onClick={() => navigate("/users")}
           >
-            <i className="fas fa-user-plus"></i> Agregar Usuarios
+            <i className="fas fa-user-plus"></i> Usuarios
           </button>
         </li>
       </ul>
