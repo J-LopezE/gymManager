@@ -56,7 +56,15 @@ def signin():
     if not check_password_hash(user.password, password):
         return jsonify({"error", "se ha producido un error al iniciar sesion, intenta nuevamente"}), 400
     user_token = create_access_token({"id": user.id, "user_name": user.user_name, "profile_img_url": user.profile_img_url, "rol": user.rol, "number": user.number })
-    return jsonify({"token": user_token}), 200
+    return jsonify({"token": user_token}), 200 
+
+#ENDPOINT PARA OBTENER LOS DATOS DEL USUARIO LOGUEADO.
+
+@api.route('/me', methods=['GET'])
+@jwt_required()
+def get_user_data():
+    user_data = get_jwt_identity()
+    return jsonify(user_data), 200
 
 #ENDPOINT PARA OBTENER TODOS LOS USUARIOS (FUNCIONARIOS DEL GYM)
 
