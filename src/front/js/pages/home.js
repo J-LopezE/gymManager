@@ -7,8 +7,6 @@ export const Home = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
 
-  
-
   const homeBackgroundStyle = {
     backgroundImage: `url(${Gym})`,
     backgroundSize: "cover",
