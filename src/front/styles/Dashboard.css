@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a202c;;
+}
+
+
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.card {
+    width: 48%;
+    background-color: #f9f9f9;
+    border: 1px solid #1a202c;;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.bottom-section {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.bottom-section h3 {
+    margin-bottom: 10px;
+}
+
+.bottom-section ul {
+    list-style: none;
+}
+
+.bottom-section ul li {
+    margin: 5px 0;
+}
+
+.back-button {
+    background-color: #eff1f5; /* Color de fondo */
+    color: rgb(15, 17, 16); /* Color del texto */
+    border: 10cap; /* Quitar el borde */
+    padding: 5px 20px; /* Espaciado interno */
+    margin: 6px; /* Espaciado externo */
+    cursor: pointer; /* Cursor tipo mano */
+    border-radius: 6px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+  }
+  
+  .back-button:hover {
+    background-color: #21b853; /* Color de fondo al pasar el ratón */
+  }
