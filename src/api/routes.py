@@ -8,7 +8,6 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
@@ -163,7 +162,6 @@ def get_all_members():
     return jsonify(members_data), 200
 
 #ENDPOINT PARA OBTENER LOS MIEMBROS CREADOS POR UN USUARIO
-
 @api.route('/<int:id>/members', methods=['GET'])
 def get_user_members(id):
     try: 
@@ -173,6 +171,64 @@ def get_user_members(id):
             return  jsonify({'error': 'usuario no encontrado'}),404
         member_list = [member.serialize() for member in user.members]
         return jsonify({"members": member_list}), 200
+    except Exception as error:
+        return jsonify({"error": f"{error}"}), 500
+    
+#endpoint para editar Member REQUIERE TOKEN
+@api.route('/edit_member', methods=['PUT'])
+@jwt_required()
+def edit_member():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        member_id = body.get("id")
+        user_id = user_data.get("id")
+        
+        if not member_id or not user_id:
+            return jsonify({'error': 'Missing member ID or user ID'}), 400
+        
+        member = Member.query.filter_by(id=member_id, user_id=user_id).first()
+        if member is None:
+            return jsonify({'error': 'Member no found'}), 404
+                  
+        member.name = body.get("name", member.name)
+        member.last_name = body.get("last_name", member.last_name)
+        member.profile_img_url = body.get("profile_img_url", member.profile_img_url)
+        member.blood_type = body.get("blood_type", member.blood_type)
+        member.gender = body.get("gender",  member.gender)
+        member.birthdate = body.get("birthdate", member.birthdate)
+        member.address = body.get("address", member.address)
+        member.phone = body.get("phone", member.phone)
+        member.emergency_phone = body.get("emergency_phone", member.emergency_phone)
+        member.stature = body.get("stature", member.stature)
+        member.weight = body.get("weight", member.weight)
+        member.objectives = body.get("objectives", member.objectives)
+        member.payement_type = body.get("payement_type", member.payement_type)
+        member.refered = body.get("refered", member.refered)
+        
+        db.session.commit()
+        
+        return jsonify({"message": "Member update successfully"}), 200
+    except Exception as error:
+        return jsonify({"error": str(error)}), 500
+
+#Endpoint para borrar Member REQUIERE TOKEN
+
+@api.route('/delete_member', methods=['DELETE'])
+@jwt_required()
+def delete_member():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        member_id = body.get("id", None)
+        user_id = user_data.get("id")
+        
+        member = Member.query.filter_by(user_id= user_id, id=member_id).first()
+        if member is  None:
+            return jsonify({'error': 'Member no found'}), 404
+        db.session.delete(member)
+        db.session.commit()
+        return jsonify({"message": f"Member removed"}), 200
     except Exception as error:
         return jsonify({"error": f"{error}"}), 500
     

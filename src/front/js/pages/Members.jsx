@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 import Gym from "../../img/gym.png"; // Import the image
 import { CreateMembers } from "../component/CreateMembers.jsx";
 import { EditMembers } from "../component/EditMembers.jsx";
 import "../../styles/tables.css";
 import Table from "react-bootstrap/Table";
-
+import { jwtDecode } from "jwt-decode";
 export const Members = () => {
   const homeBackgroundStyle = {
     backgroundImage: `url(${Gym})`,
@@ -14,14 +15,32 @@ export const Members = () => {
     height: "100vh",
     width: "100%",
   };
+  const { store, actions } = useContext(Context);
   const navigate = useNavigate();
+  const getTokenInfo = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    try {
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+      return decodedToken.sub.id;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const jwt = localStorage.getItem("token");
     if (!jwt) {
       navigate("/login");
     }
-  });
+    const userId = getTokenInfo(); // Obtener ID del usuario
+
+    if (userId) {
+      actions.getUserMembers(userId); // Pasar el ID del usuario a la función
+    }
+  }, []);
   return (
     <div
       style={homeBackgroundStyle}
@@ -46,35 +65,21 @@ export const Members = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Jorge</td>
-                <td>López</td>
-                <td>Premium</td>
-                <td>Activo</td>
-                <td colSpan={2}>
-                  <button type="button" class="btn btn-danger me-5">
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                  <EditMembers />
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Inactivo</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colSpan={2}>Larry the Bird</td>
-                <td>@twitter</td>
-                <td></td>
-                <td></td>
-              </tr>
+              {store.userMembers.map((member) => (
+                <tr key={member.id}>
+                  <td>{member.id + 1}</td>
+                  <td>{member.name}</td>
+                  <td>{member.last_name}</td>
+                  <td>{member.membership || "N/A"}</td>
+                  <td>{member.status || "N/A"}</td>
+                  <td>
+                    <button type="button" className="btn btn-danger me-5">
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                    <EditMembers member={member} />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </div>
