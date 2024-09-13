@@ -1,32 +1,38 @@
 import React from "react";
 import { FormMembers } from "./FormMembers.jsx";
 
-export const EditMembers = () => {
+export const EditMembers = ({ member }) => {
+  console.log(member);
+  if (!member) {
+    return <p>No se encontró el miembro.</p>;
+  }
   return (
     <>
       <button
         type="button"
-        class="btn btn-primary"
+        className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        data-bs-target={`#edit-member-${member.id}`}
       >
         <i className="fa-solid fa-pencil"></i>
       </button>
 
       <div
         className="modal fade"
-        id="staticBackdrop"
+        id={`edit-member-${member.id}`}
         data-bs-backdrop="static"
         data-bs-keyboard="false"
-        tabindex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
+        tabIndex="-1"
+        aria-labelledby={`edit-member-${member.id}-label`}
       >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="staticBackdropLabel">
-                Modal title
+              <h1
+                className="modal-title fs-5"
+                id={`edit-member-${member.id}-label`}
+              >
+                Editar Miembro
               </h1>
               <button
                 type="button"
@@ -36,18 +42,17 @@ export const EditMembers = () => {
               ></button>
             </div>
             <div className="modal-body">
-              <FormMembers />
-            </div>
-            <div class="modal-footer">
+              <FormMembers
+                btnMember={"Actualizar"}
+                member={member}
+                id={member.id}
+              />
               <button
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
                 Close
-              </button>
-              <button type="button" className="btn btn-primary">
-                Understood
               </button>
             </div>
           </div>
