@@ -1,9 +1,10 @@
 .sidebar {
   height: 90vh;
   width: 250px;
+  left: 0;
   position: fixed;
   border-radius: 10px;
-  background-color: #111;
+  background-color: #111111c7;
   padding: 20px;
   margin-left: 5px;
   display: flex; /* Add this */
