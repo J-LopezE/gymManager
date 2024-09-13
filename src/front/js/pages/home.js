@@ -1,11 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 import Gym from "../../img/gym.png"; // Import the image
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
+
+  useTokenExpiration();
 
   const homeBackgroundStyle = {
     backgroundImage: `url(${Gym})`,

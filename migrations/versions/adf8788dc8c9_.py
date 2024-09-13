@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: dfb5facf5331
+Revision ID: adf8788dc8c9
 Revises: 
-Create Date: 2024-09-12 15:57:17.544199
+Create Date: 2024-09-12 21:18:59.128599
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'dfb5facf5331'
+revision = 'adf8788dc8c9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,12 +37,12 @@ def upgrade():
     sa.Column('profile_img_url', sa.String(length=200), nullable=False),
     sa.Column('blood_type', sa.String(length=120), nullable=False),
     sa.Column('gender', sa.String(length=120), nullable=False),
-    sa.Column('birthdate', sa.Date(), nullable=False),
+    sa.Column('birthdate', sa.String(length=120), nullable=False),
     sa.Column('address', sa.String(length=120), nullable=False),
     sa.Column('phone', sa.BigInteger(), nullable=False),
     sa.Column('emergency_phone', sa.BigInteger(), nullable=False),
-    sa.Column('stature', sa.Float(), nullable=False),
-    sa.Column('weight', sa.Float(), nullable=False),
+    sa.Column('stature', sa.String(length=120), nullable=False),
+    sa.Column('weight', sa.String(length=120), nullable=False),
     sa.Column('objectives', sa.String(length=250), nullable=False),
     sa.Column('payement_type', sa.String(length=120), nullable=False),
     sa.Column('refered', sa.String(length=120), nullable=False),

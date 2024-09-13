@@ -1,12 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { useNavigate } from "react-router-dom";
+import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 import Gym from "../../img/gym.png"; // Import the image
 import { CreateMembers } from "../component/CreateMembers.jsx";
 import { EditMembers } from "../component/EditMembers.jsx";
 import "../../styles/tables.css";
 import Table from "react-bootstrap/Table";
 import { jwtDecode } from "jwt-decode";
+
 export const Members = () => {
   const homeBackgroundStyle = {
     backgroundImage: `url(${Gym})`,
@@ -17,17 +19,21 @@ export const Members = () => {
   };
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
+  useTokenExpiration();
   const getTokenInfo = () => {
     const token = localStorage.getItem("token");
     if (!token) return null;
     try {
       const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
       return decodedToken.sub.id;
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;
     }
+  };
+
+  const deleteMember = (id) => {
+    actions.delete_member(id);
   };
 
   useEffect(() => {
@@ -38,7 +44,7 @@ export const Members = () => {
     const userId = getTokenInfo(); // Obtener ID del usuario
 
     if (userId) {
-      actions.getUserMembers(userId); // Pasar el ID del usuario a la función
+      actions.getAllMembers();
     }
   }, []);
   return (
@@ -47,12 +53,12 @@ export const Members = () => {
       className="text-center d-flex align-items-center justify-content-center"
     >
       <div className="members-container">
-        <div className="create-members-container">
-          <CreateMembers />
-        </div>
-
         {/* Tabla */}
-        <div className="table-container">
+        <div className="table-container mx-auto">
+          <div className="create-members-container d-flex float-end">
+            <CreateMembers />
+          </div>
+
           <Table striped bordered hover variant="dark" className="table">
             <thead>
               <tr>
@@ -65,7 +71,7 @@ export const Members = () => {
               </tr>
             </thead>
             <tbody>
-              {store.userMembers.map((member) => (
+              {store.members.map((member) => (
                 <tr key={member.id}>
                   <td>{member.id + 1}</td>
                   <td>{member.name}</td>
@@ -73,7 +79,11 @@ export const Members = () => {
                   <td>{member.membership || "N/A"}</td>
                   <td>{member.status || "N/A"}</td>
                   <td>
-                    <button type="button" className="btn btn-danger me-5">
+                    <button
+                      type="button"
+                      onClick={(e) => deleteMember(member.id)}
+                      className="btn btn-danger me-5"
+                    >
                       <i className="fa-solid fa-trash"></i>
                     </button>
                     <EditMembers member={member} />
