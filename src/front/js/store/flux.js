@@ -2,6 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       userMembers: [],
+      members: [],
       rol: ["Administrador", "Empleado"],
     },
     actions: {
@@ -71,7 +72,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           if (response.ok) {
             setStore({ me: data });
-            console.log(data);
           }
         } catch (error) {
           console.log(error);
@@ -82,7 +82,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.removeItem("token");
       },
 
-      //ADD Member
+      //ADD MEMBER
       add_member: async (
         name,
         last_name,
@@ -134,7 +134,32 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
           const data = await response.json();
           console.log(data);
+          actions.getAllMembers();
           return data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      //GET MEMBERS
+      getAllMembers: async () => {
+        const jwt = localStorage.getItem("token");
+        try {
+          const response = await fetch(
+            `${process.env.BACKEND_URL}/api/members`,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            setStore({ members: data.members });
+          } else {
+            console.log(data.error || "Error al obtener miembros del usuario");
+          }
         } catch (error) {
           console.log(error);
         }
@@ -216,12 +241,40 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           console.log(data);
           if (response.ok) {
-            actions.getUserMembers();
+            actions.getAllMembers();
             return true;
           }
         } catch (error) {
           console.log(error);
           return false;
+        }
+      },
+
+      delete_member: async (id) => {
+        const actions = getActions();
+        const jwt = localStorage.getItem("token");
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/delete_member",
+            {
+              method: "DELETE",
+              headers: {
+                "Content-type": "application/json",
+                authorization: `Bearer ${jwt}`,
+              },
+              body: JSON.stringify({
+                id,
+              }),
+            }
+          );
+          if (!response.ok) {
+            return false;
+          }
+          const data = await response.json();
+          actions.getAllMembers();
+          return data;
+        } catch (error) {
+          console.log(error);
         }
       },
     },

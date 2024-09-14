@@ -26,7 +26,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
   const [loading, setLoading] = useState(false);
   function handleChange(e) {
     setMember({ ...member, [e.target.name]: e.target.value });
-    console.log(member);
   }
 
   const handleSubmit = async (e) => {
@@ -63,6 +62,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
           member.payement_type,
           member.refered
         );
+        actions.getAllMembers();
         if (response) {
           Swal.fire({
             position: "center",
@@ -121,6 +121,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
           member.refered
         );
         console.log(response);
+        actions.getAllMembers();
         if (response) {
           Swal.fire({
             position: "center",
@@ -187,11 +188,8 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
 
   return (
     <div className="container">
-      <form className="container mt-5 form-container" onSubmit={handleSubmit}>
+      <form className="container form-container" onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="nombre" className="form-label">
-            Nombre
-          </label>
           <input
             type="text"
             className="form-control"
@@ -204,9 +202,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="apellido" className="form-label">
-            Apellido
-          </label>
           <input
             type="text"
             className="form-control"
@@ -231,9 +226,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="direccion" className="form-label">
-            Dirección
-          </label>
           <input
             type="text"
             className="form-control"
@@ -247,9 +239,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="telefono" className="form-label">
-            Teléfono
-          </label>
           <input
             type="tel"
             className="form-control"
@@ -263,9 +252,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="contactoEmergencia" className="form-label">
-            Contacto de Emergencia
-          </label>
           <input
             type="text"
             className="form-control"
@@ -279,14 +265,11 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="estatura" className="form-label">
-            Estatura (cm)
-          </label>
           <input
             type="number"
             className="form-control"
             id="estatura"
-            placeholder="Estatura"
+            placeholder="Estatura (cm)"
             value={member.stature}
             name="stature"
             onChange={(e) => handleChange(e)}
@@ -295,14 +278,11 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="peso" className="form-label">
-            Peso (kg)
-          </label>
           <input
             type="number"
             className="form-control"
             id="peso"
-            placeholder="Peso"
+            placeholder="Peso (kg)"
             value={member.weight}
             name="weight"
             onChange={handleChange}
@@ -310,9 +290,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="objetivos" className="form-label">
-            Objetivos
-          </label>
           <textarea
             className="form-control"
             id="objetivos"
@@ -324,9 +301,8 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             required
           ></textarea>
         </div>
-
         <select
-          className="form-select"
+          className="form-select mb-3"
           id="genero"
           onChange={(e) => handleChange(e)}
           name="gender"
@@ -339,11 +315,10 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
           <option value="other">Otro</option>
         </select>
 
-        <div className="mb-3">
-          <label htmlFor="fechaNacimiento" className="form-label">
-            Fecha de Nacimiento
-          </label>
+        <div className="input-group mb-3">
+          <span className="input-group-text">Fecha de Nacimiento</span>
           <input
+            placeholder="Fecha de nacimiento"
             type="date"
             className="form-control"
             id="fechaNacimiento"
@@ -354,9 +329,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="metodoPago" className="form-label">
-            Método de Pago
-          </label>
           <select
             className="form-select"
             id="metodoPago"
@@ -374,9 +346,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="tipoSangre" className="form-label">
-            Tipo de Sangre
-          </label>
           <input
             type="text"
             className="form-control"
@@ -389,9 +358,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="referido" className="form-label">
-            Referido Por
-          </label>
           <input
             type="text"
             className="form-control"
@@ -402,7 +368,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             onChange={(e) => handleChange(e)}
           />
         </div>
-
         <button type="submit" className="btn btn-primary">
           {btnMember}
         </button>

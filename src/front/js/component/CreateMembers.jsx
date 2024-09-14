@@ -36,13 +36,6 @@ export const CreateMembers = ({ member }) => {
             </div>
             <div className="modal-body">
               <FormMembers btnMember={"Guardar"} />
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@ export const Login = () => {
 
   return (
     <div style={homeBackgroundStyle} className="text-center">
-      <div className="container  login-home">
+      <div className="container login-home">
         <div className="row justify-content-center">
           <div className="col-12">
             <div className="formulario-login p-4">

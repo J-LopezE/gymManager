@@ -133,33 +133,16 @@ def create_member():
         return jsonify({"error": f"{error}"}), 500
     
 #ENDPOINT PARA OBTENER TODOS LOS MIEMBROS
-    
+
 @api.route('/members', methods=['GET'])
 def get_all_members():
-    members = Member.query.all()
-    if not members:
-        return jsonify({"error": "Aún no hay miembros"}), 404
-    members_data = [
-        {
-            "id": member.id,
-            "user_id": member.user_id,
-            "name": member.name,
-            "last_name": member.last_name,
-            "profiel_img_url": member.profile_img_url,
-            "blood_type": member.blood_type,
-            "gender": member.gender,
-            "birthdate": member.birthdate,
-            "address": member.address,
-            "phone": member.phone,
-            "emergency_phone": member.emergency_phone,
-            "stature": member.stature,
-            "weight": member.weight,
-            "objectives": member.objectives,
-            "payemenet_type": member.payement_type,
-            "refered": member.refered,
-        } for member in members
-    ]
-    return jsonify(members_data), 200
+    try:
+        members = Member.query.all()
+        member_list = [member.serialize() for member in members]
+        return jsonify({"members": member_list}), 200
+    except Exception as error:
+        return jsonify({"error": f"{error}"}), 500
+ 
 
 #ENDPOINT PARA OBTENER LOS MIEMBROS CREADOS POR UN USUARIO
 @api.route('/<int:id>/members', methods=['GET'])
@@ -221,9 +204,8 @@ def delete_member():
         body = request.json
         user_data = get_jwt_identity()
         member_id = body.get("id", None)
-        user_id = user_data.get("id")
         
-        member = Member.query.filter_by(user_id= user_id, id=member_id).first()
+        member = Member.query.filter_by(id=member_id).first()
         if member is  None:
             return jsonify({'error': 'Member no found'}), 404
         db.session.delete(member)
