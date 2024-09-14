@@ -1,8 +1,13 @@
-.login-home {
-  background-color: #11111173;
+.formulario-login {
+  background-color: #111111c7;
   color: white;
   width: 35%;
   padding-top: 40px;
+  margin-top: 10rem;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
 }
 
 .div-button {

@@ -2,10 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
-import { Home } from "./pages/home";
 
-import Dashboard from "./component/Dashboard.jsx";
-=======
+import Dashboard from "./pages/Dashboard.jsx";
 import { Subscription } from "./pages/Subscription.jsx";
 import { Members } from "./pages/Members.jsx";
 import { User } from "./pages/User.jsx";
@@ -27,10 +25,7 @@ const Layout = () => {
         <ScrollToTop>
           <SideBar />
           <Routes>
-            <Route element={<Home />} path="/" />
-
-            <Route element={<Dashboard />} path="/dashboard" />
-
+            <Route element={<Dashboard />} path="/" />
 
             <Route element={<Members />} path="/members" />
             <Route element={<Subscription />} path="/subscription" />
@@ -38,7 +33,6 @@ const Layout = () => {
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
             <Route element={<h1>Not found!</h1>} />
-
           </Routes>
         </ScrollToTop>
       </BrowserRouter>

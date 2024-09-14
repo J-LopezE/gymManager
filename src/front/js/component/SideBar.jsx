@@ -27,7 +27,7 @@ const SideBar = () => {
         <li>
           <button
             className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/")}
           >
             <i className="fas fa-tachometer-alt"></i> Dashboard
           </button>

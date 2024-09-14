@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Dashboard.css";
 import { useContext } from "react";
@@ -16,31 +16,28 @@ const Dashboard = () => {
     width: "100%",
   };
 
+  useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      navigate("/login");
+      return;
+    }
+  }, []);
+
   return (
-    <div style={homeBackgroundStyle} className="text-center mt-5">
-      {/* Aquí puedes agregar otros contenidos o componentes que quieras mostrar en el Home */}
-
+    <div style={homeBackgroundStyle} className="text-center">
       <div className="dashboard">
-        {/* Barra lateral */}
-
-        {/* Contenido principal */}
-        <div className="container mt-3">
-          <button className="back-button mt-3" onClick={() => navigate("/")}>
-            Volver al Home
-          </button>
-          {/* Sección superior */}
-          <div className="top-section mt-5">
-            <div className="card mt-3">
+        <div className="container">
+          <div className="top-section">
+            <div className="card mt-5">
               <h3>Miembros Activos</h3>
               <p>20</p>
             </div>
-            <div className="card mt-3">
+            <div className="card mt-5">
               <h3>Miembros Inactivos</h3>
               <p>2</p>
             </div>
           </div>
-
-          {/* Sección inferior */}
           <div className="bottom-section mt-5">
             <h3>Membresías próximas a vencer</h3>
             <ul className="list-group">
