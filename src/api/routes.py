@@ -25,11 +25,11 @@ def signup():
     number = body.get ("number", None)
 
     if User.query.filter_by(user_name = user_name).first() is not None:
-        return jsonify({"error": "ese nombre de usuario ya esta siendo utilizado"}), 400
+        return jsonify({"error": "Ese nombre de usuario ya esta siendo utilizado"}), 400
     if User.query.filter_by(number = number).first() is not None:
-        return jsonify({"error": "ese numero de empleado ya esta siendo utilizado"}), 400
+        return jsonify({"error": "Ese numero de empleado ya esta siendo utilizado"}), 400
     if user_name is None or password is None or profile_img_url is None or rol is None or number is None:
-        return jsonify({"error": "todos los campos son requeridos"}), 400
+        return jsonify({"error": "Todos los campos son requeridos"}), 400
     password_hash = generate_password_hash(password)
     try:
         new_user = User(user_name=user_name, password=password_hash, profile_img_url=profile_img_url, rol=rol, number=number)

@@ -32,6 +32,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return data;
         } catch (error) {
           console.log(error);
+          throw error;
         }
       },
       //LOGIN USER//
