@@ -9,6 +9,7 @@ const SideBar = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   const user = store.me;
+  const jwt = localStorage.getItem("token");
 
   const Logout = () => {
     actions.logout();
@@ -57,7 +58,7 @@ const SideBar = () => {
           </button>
         </li>
       </ul>
-      <div className={user ? "d-flex user-section" : "d-none"}>
+      <div className={!jwt ? "d-none" : "d-flex user-section"}>
         <button className="user-button">
           <img
             src={user ? user.profile_img_url : DefaultUserImage}
