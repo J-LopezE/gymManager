@@ -28,6 +28,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             return false;
           }
           const data = response.json();
+          console.log(data);
           return data;
         } catch (error) {
           console.log(error);

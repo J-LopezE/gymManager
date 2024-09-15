@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import { uploadFile } from "../../../firebase/config";
+import "../../styles/formMembers.css";
 
 export const FormMembers = ({ id, btnMember, member: initialMember }) => {
   const { store, actions } = useContext(Context);
@@ -187,100 +188,116 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
   }, [initialMember]);
 
   return (
-    <div className="container">
-      <form className="container form-container" onSubmit={handleSubmit}>
-        <div className="mb-3">
+    <div className="form-members-container">
+      <form className="form-members-form" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="nombre" className="form-members-label">
+            Nombre
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="form-members-input"
             id="nombre"
             placeholder="Nombre"
             value={member.name}
             name="name"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
           />
         </div>
-        <div className="mb-3">
+        <div>
+          <label htmlFor="apellido" className="form-members-label">
+            Apellido
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="form-members-input"
             id="apellido"
             placeholder="Apellido"
             value={member.last_name}
             name="last_name"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
           />
         </div>
-        <div className="form-grup mb-4 mt-4">
-          <div className="form-grup">
-            <input
-              id="profile_img_url"
-              type="file"
-              className="form-control p-2"
-              onChange={(e) => setProfile_img_url(e.target.files[0])}
-              required
-            />
-          </div>
+        <div>
+          <label htmlFor="profile_img_url" className="form-members-label">
+            Imagen de Perfil
+          </label>
+          <input
+            id="profile_img_url"
+            type="file"
+            className="form-members-file"
+            onChange={(e) => setProfile_img_url(e.target.files[0])}
+          />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="direccion" className="form-members-label">
+            Dirección
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="form-members-input"
             id="direccion"
             placeholder="Dirección"
             value={member.address}
             name="address"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
           />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="telefono" className="form-members-label">
+            Teléfono
+          </label>
           <input
             type="tel"
-            className="form-control"
+            className="form-members-input"
             id="telefono"
             placeholder="Teléfono"
             value={member.phone}
             name="phone"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
           />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="contactoEmergencia" className="form-members-label">
+            Contacto de Emergencia
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="form-members-input"
             id="contactoEmergencia"
             placeholder="Contacto de Emergencia"
             value={member.emergency_phone}
             name="emergency_phone"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
           />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="estatura" className="form-members-label">
+            Estatura (cm)
+          </label>
           <input
             type="number"
-            className="form-control"
+            className="form-members-input"
             id="estatura"
             placeholder="Estatura (cm)"
             value={member.stature}
             name="stature"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
           />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="peso" className="form-members-label">
+            Peso (kg)
+          </label>
           <input
             type="number"
-            className="form-control"
+            className="form-members-input"
             id="peso"
             placeholder="Peso (kg)"
             value={member.weight}
@@ -288,87 +305,100 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             onChange={handleChange}
           />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="objetivos" className="form-members-label">
+            Objetivos
+          </label>
           <textarea
-            className="form-control"
+            className="form-members-textarea"
             id="objetivos"
             rows="3"
             placeholder="Objetivos"
             value={member.objectives}
             name="objectives"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
             required
           ></textarea>
         </div>
-        <select
-          className="form-select mb-3"
-          id="genero"
-          onChange={(e) => handleChange(e)}
-          name="gender"
-          value={member.gender}
-          required
-        >
-          <option value="">Selecciona un Genero</option>
-          <option value="female">Femenino</option>
-          <option value="male">Masculino</option>
-          <option value="other">Otro</option>
-        </select>
-
-        <div className="input-group mb-3">
-          <span className="input-group-text">Fecha de Nacimiento</span>
+        <div>
+          <label htmlFor="genero" className="form-members-label">
+            Género
+          </label>
+          <select
+            className="form-members-select"
+            id="genero"
+            name="gender"
+            value={member.gender}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Selecciona un Género</option>
+            <option value="female">Femenino</option>
+            <option value="male">Masculino</option>
+            <option value="other">Otro</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="fechaNacimiento" className="form-members-label">
+            Fecha de Nacimiento
+          </label>
           <input
-            placeholder="Fecha de nacimiento"
             type="date"
-            className="form-control"
+            className="form-members-input"
             id="fechaNacimiento"
             value={member.birthdate}
             name="birthdate"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="metodoPago" className="form-members-label">
+            Método de Pago
+          </label>
           <select
-            className="form-select"
+            className="form-members-select"
             id="metodoPago"
-            onChange={(e) => handleChange(e)}
             name="payement_type"
             value={member.payement_type}
+            onChange={handleChange}
             required
           >
-            <option value="">Selecciona un método de pago</option>
+            <option value="">Selecciona un Método de Pago</option>
             <option value="cash">Efectivo</option>
             <option value="creditCard">Tarjeta de Crédito</option>
             <option value="debitCard">Tarjeta de Débito</option>
             <option value="bankTransfer">Transferencia Bancaria</option>
           </select>
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="tipoSangre" className="form-members-label">
+            Tipo de Sangre
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="form-members-input"
             id="tipoSangre"
             placeholder="Tipo de Sangre"
             value={member.blood_type}
             name="blood_type"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
-
-        <div className="mb-3">
+        <div>
+          <label htmlFor="referido" className="form-members-label">
+            Nombre del Referido
+          </label>
           <input
             type="text"
-            className="form-control"
+            className="form-members-input"
             id="referido"
-            placeholder="Nombre del referido"
+            placeholder="Nombre del Referido"
             value={member.refered}
             name="refered"
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="form-members-submit">
           {btnMember}
         </button>
       </form>

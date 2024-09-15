@@ -1,6 +1,6 @@
 import React from "react";
 import Gym from "../../img/gym.png"; // Import the image
-
+import "../../styles/subscription.css";
 export const Subscription = () => {
   const homeBackgroundStyle = {
     backgroundImage: `url(${Gym})`,
@@ -11,7 +11,7 @@ export const Subscription = () => {
   };
 
   return (
-    <div style={homeBackgroundStyle} className="text-center mt-5">
+    <div style={homeBackgroundStyle} className="text-center">
       <h1>Vista Membresias</h1>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import { FormMembers } from "./FormMembers.jsx";
+import "../../styles/editMembers.css";
 
 export const EditMembers = ({ member }) => {
   console.log(member);

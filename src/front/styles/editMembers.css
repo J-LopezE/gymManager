@@ -1,0 +1,28 @@
+/* Estilo para el modal */
+.modal-dialog {
+  max-width: 60%; /* Asegura que el modal use todo el ancho disponible */
+  margin: 1.75rem auto; /* Centra el modal verticalmente */
+}
+
+.modal-content {
+  border-radius: 0.5rem; /* Bordes redondeados para el contenido del modal */
+  overflow: hidden; /* Evita que el contenido se desborde del contenedor */
+}
+
+.modal-header {
+  background: rgb(0, 0, 0, 0.9); /* Fondo negro con transparencia */
+  color: #ffffff; /* Texto blanco */
+  border-bottom: 1px solid #e9ecef; /* Borde inferior sutil */
+}
+
+.modal-body {
+  padding: 20px; /* Espaciado interno */
+}
+
+.modal-footer {
+  padding: 15px; /* Espaciado interno en el pie del modal */
+}
+
+.btn-close {
+  filter: invert(1);
+}

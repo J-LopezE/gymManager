@@ -8,6 +8,7 @@ import { EditMembers } from "../component/EditMembers.jsx";
 import "../../styles/tables.css";
 import Table from "react-bootstrap/Table";
 import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
 
 export const Members = () => {
   const homeBackgroundStyle = {
@@ -33,7 +34,28 @@ export const Members = () => {
   };
 
   const deleteMember = (id) => {
-    actions.delete_member(id);
+    Swal.fire({
+      title: "Advertencia",
+      text: "¿Desea eliminar al miembro?",
+      position: "center",
+      icon: "error",
+      showDenyButton: true,
+      denyButtonText: "No",
+      confirmButtonText: "Si",
+    }).then((click) => {
+      if (click.isConfirmed) {
+        actions.delete_member(id);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Miembro eliminado correctamente",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        return;
+      }
+    });
   };
 
   useEffect(() => {
@@ -53,7 +75,6 @@ export const Members = () => {
       className="text-center d-flex align-items-center justify-content-center"
     >
       <div className="members-container">
-        {/* Tabla */}
         <div className="table-container mx-auto">
           <div className="create-members-container d-flex float-end">
             <CreateMembers />
