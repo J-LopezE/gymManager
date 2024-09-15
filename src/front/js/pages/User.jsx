@@ -11,7 +11,7 @@ export const User = () => {
   };
 
   return (
-    <div style={homeBackgroundStyle} className="text-center mt-5">
+    <div style={homeBackgroundStyle} className="text-center">
       <h1>Vista Usuarios</h1>
     </div>
   );

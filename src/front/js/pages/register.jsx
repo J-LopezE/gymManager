@@ -45,7 +45,7 @@ export const Register = () => {
     );
     if (response) {
       console.log(response);
-      navigate("/");
+      navigate("/login");
     }
   };
 

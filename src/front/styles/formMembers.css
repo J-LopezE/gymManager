@@ -1,0 +1,77 @@
+/* FormMembers.css */
+
+/* Estilo general del contenedor del formulario */
+.form-members-container {
+  width: 800px;
+  max-width: 11200px; /* Aumenta el ancho máximo del formulario */
+  margin: 20px auto; /* Centra el formulario y agrega espacio alrededor */
+  padding: 20px; /* Espaciado interno */
+  background-color: #ffffff; /* Fondo blanco para un diseño limpio */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
+  overflow: hidden; /* Evita el desbordamiento del contenido */
+}
+
+/* Diseño de cuadrícula para el formulario */
+.form-members-form {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Diseño de cuadrícula adaptable */
+  gap: 15px; /* Espacio entre los elementos de la cuadrícula */
+}
+
+/* Estilo para los campos de entrada */
+.form-members-input,
+.form-members-textarea,
+.form-members-select,
+.form-members-file {
+  border-radius: 4px; /* Bordes redondeados */
+  border: 1px solid #ced4da; /* Borde gris claro */
+  padding: 10px; /* Espaciado interno */
+  width: 100%; /* Asegura que los campos ocupen todo el ancho disponible */
+}
+
+/* Estilo para los campos de entrada al enfocar */
+.form-members-input:focus,
+.form-members-textarea:focus,
+.form-members-select:focus {
+  border-color: #007bff; /* Borde azul al enfocar */
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25); /* Sombra azul al enfocar */
+  outline: none; /* Elimina el contorno predeterminado */
+}
+
+/* Estilo para las etiquetas */
+.form-members-label {
+  margin-bottom: 5px; /* Espaciado inferior */
+  font-weight: bold; /* Negrita para las etiquetas */
+  display: block; /* Asegura que las etiquetas se muestren en una línea */
+}
+
+/* Estilo para el botón de envío */
+.form-members-submit {
+  background-color: #007bff; /* Fondo azul para el botón */
+  border-color: #007bff; /* Borde azul */
+  color: #ffffff; /* Texto blanco */
+  padding: 10px 15px; /* Espaciado interno del botón */
+  border: none; /* Sin borde adicional */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
+  font-size: 16px; /* Tamaño de fuente adecuado */
+  transition: background-color 0.3s, border-color 0.3s; /* Transición suave para el color */
+  width: 100%; /* Ocupa todo el ancho disponible */
+  grid-column: span 2; /* Hace que el botón ocupe el ancho completo de la cuadrícula */
+}
+
+/* Estilo para el botón de envío al pasar el ratón sobre él */
+.form-members-submit:hover {
+  background-color: #0056b3; /* Fondo azul más oscuro al pasar el ratón */
+  border-color: #004085; /* Borde azul más oscuro */
+}
+
+/* Estilo para el botón de envío al ser presionado */
+.form-members-submit:active {
+  background-color: #004085; /* Fondo azul oscuro al presionar */
+  border-color: #003768; /* Borde azul oscuro */
+}
