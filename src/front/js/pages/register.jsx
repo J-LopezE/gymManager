@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { uploadFile } from "../../../firebase/config";
 import "../../styles/login.css";
 import Gym from "../../img/gym.png";
+import Swal from "sweetalert2";
 
 export const Register = () => {
   const { store, actions } = useContext(Context);
@@ -31,21 +32,62 @@ export const Register = () => {
 
   const handleSubmitRegister = async (e) => {
     e.preventDefault();
-    let result;
-    if (profile_img_url) {
-      result = await uploadFile(profile_img_url);
-      console.log(result);
-    }
-    const response = await actions.register(
-      user.user_name,
-      user.password,
-      result,
-      user.rol,
-      user.number
-    );
-    if (response) {
-      console.log(response);
-      navigate("/login");
+    const loadingAlert = Swal.fire({
+      title: "Creando usuario...",
+      text: "Estamos creando tu cuenta. Por favor, espera...",
+      icon: "info",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      let result = null;
+      if (profile_img_url) {
+        result = await uploadFile(profile_img_url);
+        console.log(result);
+      }
+
+      const response = await actions.register(
+        user.user_name,
+        user.password,
+        result,
+        user.rol,
+        user.number
+      );
+
+      if (response) {
+        // Cierra la alerta de carga y muestra una alerta de éxito
+        await loadingAlert.close();
+        Swal.fire({
+          title: "Usuario creado",
+          text: "Tu cuenta ha sido creada con éxito. Puedes iniciar sesión ahora.",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        }).then(() => {
+          navigate("/login");
+        });
+      } else {
+        // Cierra la alerta de carga y muestra una alerta de error
+        await loadingAlert.close();
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo crear la cuenta. Intenta de nuevo.",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    } catch (error) {
+      // Cierra la alerta de carga y muestra una alerta de error en caso de excepción
+      await loadingAlert.close();
+      Swal.fire({
+        title: "Error",
+        text: "Ocurrió un error inesperado. Intenta de nuevo.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+      console.error("Error en handleSubmitRegister:", error);
     }
   };
 

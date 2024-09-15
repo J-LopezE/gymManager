@@ -1,77 +1,168 @@
-/* FormMembers.css */
-
 /* Estilo general del contenedor del formulario */
 .form-members-container {
-  width: 800px;
-  max-width: 11200px; /* Aumenta el ancho máximo del formulario */
-  margin: 20px auto; /* Centra el formulario y agrega espacio alrededor */
-  padding: 20px; /* Espaciado interno */
-  background-color: #ffffff; /* Fondo blanco para un diseño limpio */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
-  overflow: hidden; /* Evita el desbordamiento del contenido */
-}
-
-/* Diseño de cuadrícula para el formulario */
-.form-members-form {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
-  ); /* Diseño de cuadrícula adaptable */
-  gap: 15px; /* Espacio entre los elementos de la cuadrícula */
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 10px;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 /* Estilo para los campos de entrada */
 .form-members-input,
 .form-members-textarea,
-.form-members-select,
-.form-members-file {
-  border-radius: 4px; /* Bordes redondeados */
-  border: 1px solid #ced4da; /* Borde gris claro */
-  padding: 10px; /* Espaciado interno */
-  width: 100%; /* Asegura que los campos ocupen todo el ancho disponible */
+.form-members-select {
+  border: none;
+  border-bottom: 2px solid #ffffff;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  background: transparent;
+  color: #e0e0e0;
+  box-shadow: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 /* Estilo para los campos de entrada al enfocar */
 .form-members-input:focus,
 .form-members-textarea:focus,
 .form-members-select:focus {
-  border-color: #007bff; /* Borde azul al enfocar */
-  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25); /* Sombra azul al enfocar */
-  outline: none; /* Elimina el contorno predeterminado */
+  border-bottom: 2px solid #007bff;
+  outline: none;
 }
 
-/* Estilo para las etiquetas */
-.form-members-label {
-  margin-bottom: 5px; /* Espaciado inferior */
-  font-weight: bold; /* Negrita para las etiquetas */
-  display: block; /* Asegura que las etiquetas se muestren en una línea */
+/* Estilo para los placeholders */
+.form-members-input::placeholder,
+.form-members-textarea::placeholder {
+  color: #b0b0b0;
+  opacity: 1;
+}
+
+/* Estilo para el campo de archivo */
+.form-members-file {
+  display: flex;
+  align-items: center;
+  border: 2px solid #ffffff;
+  padding: 12px;
+  background: transparent;
+  color: #e0e0e0;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: border-color 0.3s, background-color 0.3s;
+  position: relative;
+}
+
+/* Estilo para el área del archivo seleccionable */
+.form-members-file input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Estilo para el área del archivo seleccionable al enfocar */
+.form-members-file:hover {
+  border-color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
 }
 
 /* Estilo para el botón de envío */
 .form-members-submit {
-  background-color: #007bff; /* Fondo azul para el botón */
-  border-color: #007bff; /* Borde azul */
-  color: #ffffff; /* Texto blanco */
-  padding: 10px 15px; /* Espaciado interno del botón */
-  border: none; /* Sin borde adicional */
-  border-radius: 4px; /* Bordes redondeados */
-  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
-  font-size: 16px; /* Tamaño de fuente adecuado */
-  transition: background-color 0.3s, border-color 0.3s; /* Transición suave para el color */
-  width: 100%; /* Ocupa todo el ancho disponible */
-  grid-column: span 2; /* Hace que el botón ocupe el ancho completo de la cuadrícula */
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  display: block;
+  margin: 20px auto 0;
+  width: 20%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Estilo para el botón de envío al pasar el ratón sobre él */
 .form-members-submit:hover {
-  background-color: #0056b3; /* Fondo azul más oscuro al pasar el ratón */
-  border-color: #004085; /* Borde azul más oscuro */
+  background-color: #0056b3;
+  border-color: #0056b3;
 }
 
 /* Estilo para el botón de envío al ser presionado */
 .form-members-submit:active {
-  background-color: #004085; /* Fondo azul oscuro al presionar */
-  border-color: #003768; /* Borde azul oscuro */
+  background-color: #004085;
+  border-color: #004085;
+}
+
+/* Estilo para los campos extensos */
+.form-members-textarea,
+.form-members-file {
+  grid-column: 1 / span 2;
+}
+
+/* Estilo para las opciones del menú desplegable */
+.form-members-select option {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+}
+
+/* Estilo para el elemento seleccionado en el menú desplegable */
+.form-members-select option:checked {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+/* Estilo para las opciones al pasar el ratón sobre ellas */
+.form-members-select option:hover {
+  background-color: rgba(0, 123, 255, 0.3);
+  color: #ffffff;
+}
+
+/* Estilos para el contenedor general de SweetAlert2 */
+.custom-container {
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: #fff;
+}
+
+/* Estilos para el popup de SweetAlert2 */
+.custom-popup {
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  position: relative;
+  max-width: 500px;
+}
+
+/* Estilos para el título de SweetAlert2 */
+.custom-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* Estilos para el contenido de SweetAlert2 */
+.custom-content {
+  font-size: 1.2em;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* Opcional: Estilos para el botón de confirmación */
+.custom-confirm-button {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+/* Opcional: Estilos para el botón de confirmación en hover */
+.custom-confirm-button:hover {
+  background-color: #0056b3;
 }

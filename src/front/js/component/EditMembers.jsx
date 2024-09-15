@@ -30,7 +30,7 @@ export const EditMembers = ({ member }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h1
-                className="modal-title text-black fs-5"
+                className="modal-title fs-5"
                 id={`edit-member-${member.id}-label`}
               >
                 Editar Miembro
