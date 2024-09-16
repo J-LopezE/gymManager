@@ -2,7 +2,8 @@ import React, { useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
-import Gym from "../../img/gym.png"; // Import the image
+import Gym from "../../img/gym.png";
+import { EditMembership } from "../component/EditMembership.jsx";
 import "../../styles/subscription.css";
 import Table from "react-bootstrap/Table";
 import "../../styles/tables.css";
@@ -120,6 +121,7 @@ export const Membership = () => {
                     >
                       <i className="fa-solid fa-trash"></i>
                     </button>
+                    <EditMembership membership={membership} />
                   </td>
                 </tr>
               ))}
