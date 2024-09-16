@@ -270,6 +270,25 @@ def get_member_memberships(id):
         return jsonify({"memberships": membership_list}), 200
     except Exception as error:
         return jsonify({"error": f"{error}"}), 500
+
+#Endpoint para borrar Member REQUIERE TOKEN
+
+@api.route('/delete_membership', methods=['DELETE'])
+@jwt_required()
+def delete_membership():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        membership_id = body.get("id", None)
+        
+        membership = Membership.query.filter_by(id=membership_id).first()
+        if membership is  None:
+            return jsonify({'error': 'Membership no found'}), 404
+        db.session.delete(membership)
+        db.session.commit()
+        return jsonify({"message": f"Membership removed"}), 200
+    except Exception as error:
+        return jsonify({"error": f"{error}"}), 500
     
 #ENDPOINT PARA CREAR DISCIPLINAS
 

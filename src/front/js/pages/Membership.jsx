@@ -33,6 +33,42 @@ export const Membership = () => {
     }
   };
 
+  const deleteMembership = (id) => {
+    Swal.fire({
+      title: "Advertencia",
+      text: "¿Desea eliminar la membresía?",
+      position: "center",
+      icon: "error",
+      showDenyButton: true,
+      denyButtonText: "No",
+      confirmButtonText: "Si",
+      customClass: {
+        container: "custom-container",
+      },
+      background: "rgba(0, 0, 0, 0.7)",
+      color: "#fff",
+    }).then((click) => {
+      if (click.isConfirmed) {
+        actions.delete_membership(id);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Membresía eliminada correctamente",
+          showConfirmButton: false,
+          timer: 1500,
+          customClass: {
+            container: "custom-container",
+          },
+          background: "rgba(0, 0, 0, 0.7)",
+          color: "#fff",
+        });
+        actions.getAllMemberships();
+      } else {
+        return;
+      }
+    });
+  };
+
   useEffect(() => {
     const jwt = localStorage.getItem("token");
     if (!jwt) {
@@ -58,6 +94,7 @@ export const Membership = () => {
             <thead>
               <tr>
                 <th>#</th>
+                <th>Miembro</th>
                 <th>Tipo</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Final</th>
@@ -67,7 +104,10 @@ export const Membership = () => {
             <tbody>
               {store.memberships.map((membership) => (
                 <tr key={membership.id}>
-                  <td>{membership.id + 1}</td>
+                  <td>{membership.id}</td>
+                  <td>
+                    <a href="">{membership.member_id}</a>
+                  </td>
                   <td>{membership.type}</td>
                   <td>{membership.start_date}</td>
                   <td>{membership.end_date}</td>
@@ -75,7 +115,7 @@ export const Membership = () => {
                   <td>
                     <button
                       type="button"
-                      onClick={(e) => deleteMember(member.id)}
+                      onClick={(e) => deleteMembership(membership.id)}
                       className="btn btn-danger me-5"
                     >
                       <i className="fa-solid fa-trash"></i>

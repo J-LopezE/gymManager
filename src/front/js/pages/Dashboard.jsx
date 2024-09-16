@@ -22,8 +22,8 @@ const Dashboard = () => {
       navigate("/login");
       return;
     }
-    actions.getAllMembers(); // Llama a la acción para obtener miembros
-  }, [actions, navigate]);
+    actions.getAllMembers();
+  }, []);
 
   // Filtra miembros activos
   const getActiveMembers = () => {
@@ -53,8 +53,8 @@ const Dashboard = () => {
                   <ul className="list-unstyled">
                     {getActiveMembers().length > 0 ? (
                       getActiveMembers().map((member, index) => (
-                        <li key={member.id}>
-                          {index + 1}. {member.name}
+                        <li key={member.id + index}>
+                          {member.id}. {member.name}
                         </li>
                       ))
                     ) : (
@@ -71,8 +71,8 @@ const Dashboard = () => {
                   <ul className="list-unstyled">
                     {getInactiveMembers().length > 0 ? (
                       getInactiveMembers().map((member, index) => (
-                        <li key={member.id}>
-                          {index + 1}. {member.name}
+                        <li key={member.id + index}>
+                          {index.id}. {member.name}
                         </li>
                       ))
                     ) : (
@@ -96,8 +96,8 @@ const Dashboard = () => {
               <tbody>
                 {store.members && store.members.length > 0 ? (
                   store.members.map((member, index) => (
-                    <tr key={member.id}>
-                      <th scope="row">{index + 1}</th>
+                    <tr key={member.id + index}>
+                      <th scope="row">{member.id}</th>
                       <td>{member.name}</td>
                       <td>{member.status}</td>
                       <td>

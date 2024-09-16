@@ -105,11 +105,21 @@ export const Members = () => {
             <tbody>
               {store.members.map((member) => (
                 <tr key={member.id}>
-                  <td>{member.id + 1}</td>
+                  <td>{member.id}</td>
                   <td>{member.name}</td>
                   <td>{member.last_name}</td>
                   <td>
-                    {member.membership || <CreateMemberships member={member} />}
+                    {member.memberships.length ? (
+                      member.memberships.map((suscription) => (
+                        <>
+                          <p>Tipo: {suscription.type}</p>
+                          <p>Inicio: {suscription.start_date}</p>
+                          <p>Fin: {suscription.start_date}</p>
+                        </>
+                      ))
+                    ) : (
+                      <CreateMemberships member={member} />
+                    )}
                   </td>
                   <td>{member.status || "N/A"}</td>
                   <td>
