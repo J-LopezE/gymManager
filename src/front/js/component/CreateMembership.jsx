@@ -1,31 +1,34 @@
-import React from "react";
-import { FormMembers } from "./FormMembers.jsx";
+import React, { useContext } from "react";
+import { Context } from "../store/appContext.js";
+import { FormMembership } from "./FormMembership.jsx";
 
-export const CreateMembers = () => {
+export const CreateMemberships = ({ member }) => {
+  const { actions } = useContext(Context);
   return (
     <>
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target="#createMemberModal"
+        data-bs-target="#createMembershipModal"
+        onClick={(e) => actions.add_id_member(member.id)}
       >
         <i className="fa-solid fa-plus"></i>
       </button>
 
       <div
         className="modal fade"
-        id="createMemberModal"
+        id="createMembershipModal"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex="-1"
-        aria-labelledby="createMemberModal"
+        aria-labelledby="createMembershipModal"
       >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="createMemberModal">
-                Crear Miembro
+              <h1 className="modal-title fs-5" id="createMembershipModal">
+                Crear Membresía
               </h1>
               <button
                 type="button"
@@ -35,7 +38,7 @@ export const CreateMembers = () => {
               ></button>
             </div>
             <div className="modal-body">
-              <FormMembers btnMember={"Guardar"} />
+              <FormMembership btnMembership={"Guardar"} />
             </div>
           </div>
         </div>

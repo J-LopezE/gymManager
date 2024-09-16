@@ -44,7 +44,7 @@ const SideBar = () => {
         <li>
           <button
             className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/subscription")}
+            onClick={() => navigate("/membership")}
           >
             <i className="fas fa-clipboard-list"></i> Membresías
           </button>

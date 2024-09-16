@@ -3,6 +3,8 @@ const getState = ({ getStore, getActions, setStore }) => {
     store: {
       userMembers: [],
       members: [],
+      id_member: [],
+      memberships: [],
       rol: ["Administrador", "Empleado"],
     },
     actions: {
@@ -275,6 +277,69 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           actions.getAllMembers();
           return data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      //ADD SET MEMBER ID (id_member)
+
+      add_id_member: (id) => {
+        setStore({
+          id_member: id,
+        });
+        console.log(id);
+      },
+
+      //ADD MEMBERSHIP
+      add_membership: async (type, start_date, end_date) => {
+        const jwt = localStorage.getItem("token");
+        const store = getStore();
+        const member_id = store.id_member;
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/create_membership",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${jwt}`,
+              },
+
+              body: JSON.stringify({
+                type,
+                start_date,
+                end_date,
+                member_id,
+              }),
+            }
+          );
+          if (!response.ok) console.log(response);
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      //GET MEMBERSHIPS
+      getAllMemberships: async () => {
+        const jwt = localStorage.getItem("token");
+        try {
+          const response = await fetch(
+            `${process.env.BACKEND_URL}/api/memberships`,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            setStore({ memberships: data.memberships });
+          } else {
+            console.log(data.error || "Error al obtener miembros del usuario");
+          }
         } catch (error) {
           console.log(error);
         }

@@ -122,33 +122,20 @@
 
 /* Estilos para el contenedor general de SweetAlert2 */
 .custom-container {
-  backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.7) !important;
-  color: #fff;
-}
-
-/* Estilos para el popup de SweetAlert2 */
-.custom-popup {
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  position: relative;
-  max-width: 500px;
+  backdrop-filter: blur(14px);
 }
 
 /* Estilos para el título de SweetAlert2 */
 .custom-title {
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 1.4em;
+  font-weight: 500;
   color: #fff;
-  margin-bottom: 10px;
 }
 
 /* Estilos para el contenido de SweetAlert2 */
 .custom-content {
-  font-size: 1.2em;
+  font-size: 1em;
   color: #fff;
-  margin-bottom: 20px;
 }
 
 /* Opcional: Estilos para el botón de confirmación */

@@ -1,17 +1,15 @@
-import React, { useContext, useEffect } from "react";
-import { Context } from "../store/appContext.js";
+import React, { useEffect, useContext } from "react";
+import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 import Gym from "../../img/gym.png"; // Import the image
-import { CreateMembers } from "../component/CreateMembers.jsx";
-import { EditMembers } from "../component/EditMembers.jsx";
-import "../../styles/tables.css";
+import "../../styles/subscription.css";
 import Table from "react-bootstrap/Table";
+import "../../styles/tables.css";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
-import { CreateMemberships } from "../component/CreateMembership.jsx";
 
-export const Members = () => {
+export const Membership = () => {
   const homeBackgroundStyle = {
     backgroundImage: `url(${Gym})`,
     backgroundSize: "cover",
@@ -19,6 +17,7 @@ export const Members = () => {
     height: "100vh",
     width: "100%",
   };
+
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   useTokenExpiration();
@@ -34,41 +33,6 @@ export const Members = () => {
     }
   };
 
-  const deleteMember = (id) => {
-    Swal.fire({
-      title: "Advertencia",
-      text: "¿Desea eliminar al miembro?",
-      position: "center",
-      icon: "error",
-      showDenyButton: true,
-      denyButtonText: "No",
-      confirmButtonText: "Si",
-      customClass: {
-        container: "custom-container",
-      },
-      background: "rgba(0, 0, 0, 0.7)",
-      color: "#fff",
-    }).then((click) => {
-      if (click.isConfirmed) {
-        actions.delete_member(id);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Miembro eliminado correctamente",
-          showConfirmButton: false,
-          timer: 1500,
-          customClass: {
-            container: "custom-container",
-          },
-          background: "rgba(0, 0, 0, 0.7)",
-          color: "#fff",
-        });
-      } else {
-        return;
-      }
-    });
-  };
-
   useEffect(() => {
     const jwt = localStorage.getItem("token");
     if (!jwt) {
@@ -77,9 +41,10 @@ export const Members = () => {
     const userId = getTokenInfo();
 
     if (userId) {
-      actions.getAllMembers();
+      actions.getAllMemberships();
     }
   }, []);
+
   return (
     <div
       style={homeBackgroundStyle}
@@ -87,31 +52,26 @@ export const Members = () => {
     >
       <div className="members-container">
         <div className="table-container mx-auto">
-          <div className="create-members-container d-flex float-end">
-            <CreateMembers />
-          </div>
+          <div className="create-members-container d-flex float-end"></div>
 
           <Table striped bordered hover variant="dark" className="table">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Membresía</th>
-                <th>Estado</th>
+                <th>Tipo</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Final</th>
                 <th colSpan={2}>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {store.members.map((member) => (
-                <tr key={member.id}>
-                  <td>{member.id + 1}</td>
-                  <td>{member.name}</td>
-                  <td>{member.last_name}</td>
-                  <td>
-                    {member.membership || <CreateMemberships member={member} />}
-                  </td>
-                  <td>{member.status || "N/A"}</td>
+              {store.memberships.map((membership) => (
+                <tr key={membership.id}>
+                  <td>{membership.id + 1}</td>
+                  <td>{membership.type}</td>
+                  <td>{membership.start_date}</td>
+                  <td>{membership.end_date}</td>
+
                   <td>
                     <button
                       type="button"
@@ -120,7 +80,6 @@ export const Members = () => {
                     >
                       <i className="fa-solid fa-trash"></i>
                     </button>
-                    <EditMembers member={member} />
                   </td>
                 </tr>
               ))}

@@ -58,6 +58,8 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         content: "custom-content",
         confirmButton: "custom-confirm-button",
       },
+      background: "rgba(0, 0, 0, 0.7)",
+      color: "#fff",
     });
     try {
       let result;
@@ -113,9 +115,9 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
           content: "custom-content",
           confirmButton: "custom-confirm-button",
         },
-      }).then(() => {
-        onClose();
-      });
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff",
+      }).then(() => {});
       if (!id) {
         setMember({
           name: "",
@@ -140,10 +142,14 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         title: "Error",
         text: `Hubo un problema: ${error.message}`,
         customClass: {
-          container: "swal2-container",
-          title: "swal2-title",
-          content: "swal2-content",
+          container: "custom-container",
+          popup: "custom-popup",
+          title: "custom-title",
+          content: "custom-content",
+          confirmButton: "custom-confirm-button",
         },
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff",
       });
     } finally {
       setLoading(false);
