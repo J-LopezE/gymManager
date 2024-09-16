@@ -9,6 +9,7 @@
   margin-left: 5px;
   display: flex; /* Add this */
   flex-direction: column; /* Add this */
+  z-index: 20;
 }
 
 .sidebar h2 {
@@ -78,4 +79,9 @@
   margin: 10px;
   height: 20px;
   width: auto;
+}
+
+.btn-session {
+  border: none;
+  color: rgb(255, 255, 255);
 }

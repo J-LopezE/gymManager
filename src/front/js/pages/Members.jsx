@@ -63,7 +63,7 @@ export const Members = () => {
     if (!jwt) {
       navigate("/login");
     }
-    const userId = getTokenInfo(); // Obtener ID del usuario
+    const userId = getTokenInfo();
 
     if (userId) {
       actions.getAllMembers();

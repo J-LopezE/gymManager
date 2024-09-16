@@ -1,3 +1,8 @@
+.dashboard {
+  margin-left: 200px;
+  padding: 40px;
+}
+
 /* Sección de tarjetas de estadísticas */
 .statistics-section {
   display: flex;
@@ -10,11 +15,16 @@
   display: flex;
   justify-content: space-between;
   flex: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }
 
 .card {
   width: 48%; /* Asegura que las tarjetas ocupen el espacio disponible */
   margin: 0; /* Elimina márgenes innecesarios */
+  border-radius: 8px;
 }
 
 /* Estilo para las listas de miembros */
@@ -26,4 +36,12 @@
 .card li {
   margin-bottom: 5px; /* Espaciado entre elementos de la lista */
   text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.table-container-dashboard {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }

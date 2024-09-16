@@ -37,6 +37,14 @@ export const Register = () => {
       text: "Estamos creando tu cuenta. Por favor, espera...",
       icon: "info",
       allowOutsideClick: false,
+      customClass: {
+        container: "custom-container",
+        popup: "custom-popup",
+        title: "custom-title",
+        content: "custom-content",
+      },
+      background: "rgba(0, 0, 0, 0.7)",
+      color: "#fff",
       didOpen: () => {
         Swal.showLoading();
       },
@@ -48,7 +56,6 @@ export const Register = () => {
         result = await uploadFile(profile_img_url);
         console.log(result);
       }
-
       const response = await actions.register(
         user.user_name,
         user.password,
@@ -56,7 +63,6 @@ export const Register = () => {
         user.rol,
         user.number
       );
-
       if (response) {
         // Cierra la alerta de carga y muestra una alerta de éxito
         await loadingAlert.close();
@@ -65,6 +71,14 @@ export const Register = () => {
           text: "Tu cuenta ha sido creada con éxito. Puedes iniciar sesión ahora.",
           icon: "success",
           confirmButtonText: "Aceptar",
+          customClass: {
+            container: "custom-container",
+            popup: "custom-popup",
+            title: "custom-title",
+            content: "custom-content",
+          },
+          background: "rgba(0, 0, 0, 0.7)",
+          color: "#fff",
         }).then(() => {
           navigate("/login");
         });
@@ -76,6 +90,14 @@ export const Register = () => {
           text: "No se pudo crear la cuenta. Intenta de nuevo.",
           icon: "error",
           confirmButtonText: "Aceptar",
+          customClass: {
+            container: "custom-container",
+            popup: "custom-popup",
+            title: "custom-title",
+            content: "custom-content",
+          },
+          background: "rgba(0, 0, 0, 0.7)",
+          color: "#fff",
         });
       }
     } catch (error) {

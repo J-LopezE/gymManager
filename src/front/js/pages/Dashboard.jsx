@@ -42,7 +42,7 @@ const Dashboard = () => {
   return (
     <div style={homeBackgroundStyle} className="text-center">
       <div className="dashboard">
-        <div className="container mt-5">
+        <div className="container">
           {/* Sección de Tarjetas de Estadísticas */}
           <div className="statistics-section mb-4">
             <div className="card-container">
@@ -83,40 +83,41 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
-          <table className="table table-dark table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Miembros</th>
-                <th scope="col">Membresías Proximas en Terminar</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {store.members && store.members.length > 0 ? (
-                store.members.map((member, index) => (
-                  <tr key={member.id}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{member.name}</td>
-                    <td>{member.status}</td>
-                    <td>
-                      <button className="btn btn-danger btn-sm mx-1">
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                      <button className="btn btn-primary btn-sm mx-1">
-                        <i className="fas fa-edit"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
+          <div className="table-container-dashboard">
+            <table className="table table-dark table-striped">
+              <thead>
                 <tr>
-                  <td colSpan="4">No hay membresías próximas a vencer.</td>
+                  <th scope="col">#</th>
+                  <th scope="col">Miembros</th>
+                  <th scope="col">Membresías Proximas en Terminar</th>
+                  <th scope="col"></th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {store.members && store.members.length > 0 ? (
+                  store.members.map((member, index) => (
+                    <tr key={member.id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{member.name}</td>
+                      <td>{member.status}</td>
+                      <td>
+                        <button className="btn btn-danger btn-sm mx-1">
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
+                        <button className="btn btn-primary btn-sm mx-1">
+                          <i className="fas fa-edit"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4">No hay membresías próximas a vencer.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

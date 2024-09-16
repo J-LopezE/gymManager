@@ -69,8 +69,11 @@ const SideBar = () => {
             {user ? user.user_name : "Jhon Doe"}
           </span>
         </button>
-        <button className="rounded p-2 m-3" onClick={() => Logout()}>
-          cerrar sesion
+        <button
+          className="btn-session btn-primary rounded p-2 m-3"
+          onClick={() => Logout()}
+        >
+          <i className="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
     </div>
