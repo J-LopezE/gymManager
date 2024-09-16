@@ -52,6 +52,11 @@ export const Login = () => {
         text: "Nombre de usuario o contraseña incorrectos.",
         icon: "error",
         confirmButtonText: "Aceptar",
+        customClass: {
+          container: "custom-container",
+        },
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff",
       });
     }
   };

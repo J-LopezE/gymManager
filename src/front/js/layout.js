@@ -4,7 +4,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import Dashboard from "./pages/Dashboard.jsx";
-import { Subscription } from "./pages/Subscription.jsx";
+import { Membership } from "./pages/Membership.jsx";
 import { Members } from "./pages/Members.jsx";
 import { User } from "./pages/User.jsx";
 
@@ -28,7 +28,7 @@ const Layout = () => {
             <Route element={<Dashboard />} path="/" />
 
             <Route element={<Members />} path="/members" />
-            <Route element={<Subscription />} path="/subscription" />
+            <Route element={<Membership />} path="/membership" />
             <Route element={<User />} path="/users" />
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />

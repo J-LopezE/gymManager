@@ -1,49 +1,31 @@
-/* Estilo para el modal */
 .modal-dialog {
-  max-width: 63%; /* Asegura que el modal use todo el ancho disponible */
-  margin: 1.75rem auto; /* Centra el modal verticalmente */
+  max-width: 63%;
+  margin: 1.75rem auto;
 }
 
-/* Contenido del modal */
 .modal-content {
-  border-radius: 0.5rem; /* Bordes redondeados para el contenido del modal */
-  overflow: hidden; /* Evita que el contenido se desborde del contenedor */
-  background: rgba(
-    255,
-    255,
-    255,
-    0.1
-  ); /* Fondo con transparencia para efecto cristal */
-  backdrop-filter: blur(10px); /* Efecto de desenfoque para el efecto cristal */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil para definir el contorno */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Encabezado del modal */
 .modal-header {
-  background: rgba(
-    0,
-    0,
-    0,
-    0.7
-  ); /* Fondo negro con transparencia para el encabezado */
-  color: #ffffff; /* Texto blanco */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Borde inferior sutil para separación */
-  backdrop-filter: blur(10px); /* Efecto de desenfoque para el encabezado */
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
 }
 
-/* Cuerpo del modal */
 .modal-body {
-  padding: 20px; /* Espaciado interno */
+  padding: 20px;
 }
 
-/* Pie del modal */
 .modal-footer {
-  padding: 15px; /* Espaciado interno en el pie del modal */
+  padding: 15px;
 }
 
-/* Botón de cierre del modal */
 .btn-close {
-  filter: invert(
-    1
-  ); /* Invierte los colores del botón de cierre para visibilidad en fondo oscuro */
+  filter: invert(1);
 }

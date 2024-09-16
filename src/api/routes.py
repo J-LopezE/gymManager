@@ -250,20 +250,12 @@ def create_membership():
     
 @api.route('/memberships', methods=['GET'])
 def get_all_memberships():
-    memberships = Membership.query.all()
-    if not memberships:
-        return jsonify({"error": "Aún no hay membresias"}), 404
-    memberships_data = [
-        {
-            "id": membership.id,
-            "user_id": membership.user_id,
-            "type": membership.type,
-            "start_date": membership.start_date,
-            "end_date": membership.end_date,
-            "member_id": membership.member_id,
-        } for membership in memberships
-    ]
-    return jsonify(memberships_data), 200
+    try:
+        memberships = Membership.query.all()
+        membership_list = [membership.serialize() for membership in memberships]
+        return jsonify({"memberships": membership_list}), 200
+    except Exception as error:
+        return jsonify({"error": f"{error}"}), 500
 
 #ENDPOINT PARA OBTENER LAS MEMBRESIAS DE UN MIEMBRO DETERMINADO
 

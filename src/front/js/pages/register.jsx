@@ -64,7 +64,6 @@ export const Register = () => {
         user.number
       );
       if (response) {
-        // Cierra la alerta de carga y muestra una alerta de éxito
         await loadingAlert.close();
         Swal.fire({
           title: "Usuario creado",
@@ -83,11 +82,10 @@ export const Register = () => {
           navigate("/login");
         });
       } else {
-        // Cierra la alerta de carga y muestra una alerta de error
         await loadingAlert.close();
         Swal.fire({
           title: "Error",
-          text: "No se pudo crear la cuenta. Intenta de nuevo.",
+          text: `Hubo un problema else: ${error.message}`,
           icon: "error",
           confirmButtonText: "Aceptar",
           customClass: {
@@ -101,13 +99,20 @@ export const Register = () => {
         });
       }
     } catch (error) {
-      // Cierra la alerta de carga y muestra una alerta de error en caso de excepción
       await loadingAlert.close();
       Swal.fire({
         title: "Error",
-        text: "Ocurrió un error inesperado. Intenta de nuevo.",
+        text: `Hubo un problema inesperado: ${error.message}`,
         icon: "error",
         confirmButtonText: "Aceptar",
+        customClass: {
+          container: "custom-container",
+          popup: "custom-popup",
+          title: "custom-title",
+          content: "custom-content",
+        },
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff",
       });
       console.error("Error en handleSubmitRegister:", error);
     }
