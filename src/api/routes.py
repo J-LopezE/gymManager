@@ -244,6 +244,32 @@ def create_membership():
         return jsonify({"new_membership": new_membership.serialize()}), 201
     except Exception as error:
         db.session.rollback()
+        return jsonify({"error": f"{error}"}), 500
+
+#ENDPOINT PARA EDITAR MEMBRESÍA
+
+@api.route('/edit_membership', methods=['PUT'])
+@jwt_required()
+def edit_membership():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        membership_id = body.get("id")
+        user_id = user_data["id"]
+        
+        if not membership_id or not user_id:
+            return jsonify({'error': 'Missing member ID or user ID'}), 400
+        
+        membership = Membership.query.filter_by(id=membership_id, user_id=user_id).first()
+        if membership is None:
+            return jsonify({'error': 'Membership no found'}), 404
+        membership.type = body.get("type", membership.type)
+        membership.start_date = body.get("start_date", membership.start_date)
+        membership.end_date = body.get("end_date", membership.end_date)
+        membership.member_id = body.get("member_id", membership.member_id)
+        db.session.commit()
+        return jsonify({"message": "Membership update successsfully"}), 200
+    except Exception as error:
         return jsonify({"error": f"{error}"}), 500    
 
 #ENDPOINT PARA OBTENER TODAS LAS MEMBRESÍAS

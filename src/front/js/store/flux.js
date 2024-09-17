@@ -374,7 +374,41 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      //DELETE MEMBERship
+      // EDIT MEMBERSHIP
+      editMembership: async (id, type, start_date, end_date, member_id) => {
+        const actions = getActions();
+        const jwt = localStorage.getItem("token");
+
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "api/edit_membership",
+            {
+              method: "PUT",
+              body: JSON.stringify({
+                id,
+                type,
+                start_date,
+                end_date,
+                member_id,
+              }),
+              headers: {
+                "Content-type": "application/json",
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          console.log(data);
+          if (response.ok) {
+            actions.getAllMemberships();
+            return true;
+          }
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+      },
+      //DELETE MEMBERSHIP
 
       delete_membership: async (id) => {
         const actions = getActions();

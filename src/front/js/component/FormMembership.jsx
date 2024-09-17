@@ -60,8 +60,8 @@ export const FormMembership = ({
             membership.end_date,
             membership.member_id
           );
-
-      //   actions.getAllMemberships();
+      console.log(id);
+      actions.getAllMemberships();
       Swal.fire({
         position: "center",
         icon: "success",
