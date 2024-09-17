@@ -23,20 +23,48 @@ const Dashboard = () => {
       return;
     }
     actions.getAllMembers();
-  }, []);
+  }, [actions, navigate]);
 
-  // Filtra miembros activos
-  const getActiveMembers = () => {
-    return store.members
-      ? store.members.filter((member) => member.status === "activo")
-      : [];
+  const getMembershipStatus = (startDate, endDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    end.setHours(23, 59, 59, 999);
+
+    if (today >= start && today <= end) {
+      return "Activo";
+    } else {
+      return "Inactivo";
+    }
   };
 
-  // Filtra miembros inactivos
-  const getInactiveMembers = () => {
+  const getActiveMembersCount = () => {
     return store.members
-      ? store.members.filter((member) => member.status === "inactivo")
-      : [];
+      ? store.members.filter((member) =>
+          member.memberships.some(
+            (subscription) =>
+              getMembershipStatus(
+                subscription.start_date,
+                subscription.end_date
+              ) === "Activo"
+          )
+        ).length
+      : 0;
+  };
+
+  const getInactiveMembersCount = () => {
+    return store.members
+      ? store.members.filter((member) =>
+          member.memberships.every(
+            (subscription) =>
+              getMembershipStatus(
+                subscription.start_date,
+                subscription.end_date
+              ) === "Inactivo"
+          )
+        ).length
+      : 0;
   };
 
   return (
@@ -49,57 +77,45 @@ const Dashboard = () => {
               <div className="card text-white bg-dark mb-3 mt-5">
                 <div className="card-body">
                   <h5 className="card-title">Miembros Activos</h5>
-                  <p className="card-text">{getActiveMembers().length}</p>
-                  <ul className="list-unstyled">
-                    {getActiveMembers().length > 0 ? (
-                      getActiveMembers().map((member, index) => (
-                        <li key={member.id + index}>
-                          {member.id}. {member.name}
-                        </li>
-                      ))
-                    ) : (
-                      <li>No hay miembros activos.</li>
-                    )}
-                  </ul>
+                  <p className="card-text">{getActiveMembersCount()}</p>
                 </div>
               </div>
 
               <div className="card text-white bg-dark mb-3 mt-5">
                 <div className="card-body">
                   <h5 className="card-title">Miembros Inactivos</h5>
-                  <p className="card-text">{getInactiveMembers().length}</p>
-                  <ul className="list-unstyled">
-                    {getInactiveMembers().length > 0 ? (
-                      getInactiveMembers().map((member, index) => (
-                        <li key={member.id + index}>
-                          {index.id}. {member.name}
-                        </li>
-                      ))
-                    ) : (
-                      <li>No hay miembros inactivos.</li>
-                    )}
-                  </ul>
+                  <p className="card-text">{getInactiveMembersCount()}</p>
                 </div>
               </div>
             </div>
           </div>
+
           <div className="table-container-dashboard">
             <table className="table table-dark table-striped">
               <thead>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Miembros</th>
-                  <th scope="col">Membresías Proximas en Terminar</th>
+                  <th scope="col">Membresías Próximas en Terminar</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 {store.members && store.members.length > 0 ? (
-                  store.members.map((member, index) => (
-                    <tr key={member.id + index}>
+                  store.members.map((member) => (
+                    <tr key={member.id}>
                       <th scope="row">{member.id}</th>
                       <td>{member.name}</td>
-                      <td>{member.status}</td>
+                      <td>
+                        {member.memberships.map((subscription) => (
+                          <div key={subscription.id}>
+                            {getMembershipStatus(
+                              subscription.start_date,
+                              subscription.end_date
+                            )}
+                          </div>
+                        ))}
+                      </td>
                       <td>
                         <button className="btn btn-danger btn-sm mx-1">
                           <i className="fas fa-trash-alt"></i>
@@ -112,7 +128,7 @@ const Dashboard = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4">No hay membresías próximas a vencer.</td>
+                    <td colSpan="4">No hay miembros.</td>
                   </tr>
                 )}
               </tbody>
