@@ -34,6 +34,20 @@ export const Members = () => {
     }
   };
 
+  const getMembershipStatus = (startDate, endDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    end.setHours(23, 59, 59, 999);
+
+    if (today >= start && today <= end) {
+      return "Activo";
+    } else {
+      return "Inactivo";
+    }
+  };
+
   const deleteMember = (id) => {
     Swal.fire({
       title: "Advertencia",
@@ -110,18 +124,33 @@ export const Members = () => {
                   <td>{member.last_name}</td>
                   <td>
                     {member.memberships.length ? (
-                      member.memberships.map((suscription) => (
-                        <>
-                          <p>Tipo: {suscription.type}</p>
-                          <p>Inicio: {suscription.start_date}</p>
-                          <p>Fin: {suscription.start_date}</p>
-                        </>
-                      ))
+                      member.memberships.map((suscription) => suscription.type)
                     ) : (
                       <CreateMemberships member={member} />
                     )}
                   </td>
-                  <td>{member.status || "N/A"}</td>
+                  <td>
+                    {member.memberships.length
+                      ? member.memberships.map((subscription) => {
+                          console.log(
+                            "Subscription Start Date:",
+                            subscription.start_date
+                          );
+                          console.log(
+                            "Subscription End Date:",
+                            subscription.end_date
+                          );
+                          return (
+                            <div key={subscription.id}>
+                              {getMembershipStatus(
+                                subscription.start_date,
+                                subscription.end_date
+                              )}
+                            </div>
+                          );
+                        })
+                      : "N/A"}
+                  </td>
                   <td>
                     <button
                       type="button"

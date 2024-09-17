@@ -135,10 +135,10 @@ export const FormMembership = ({
               onChange={handleChange}
               required
             >
-              <option value="">Selecciona un tipo</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="">Selecciona una Membesía</option>
+              <option value="Basica">Basica</option>
+              <option value="Estandar">Estandar</option>
+              <option value="Premium">Premium</option>
             </select>
           </div>
           <div className="col-md-6 mb-3">

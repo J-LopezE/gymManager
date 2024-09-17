@@ -381,7 +381,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         try {
           const response = await fetch(
-            process.env.BACKEND_URL + "api/edit_membership",
+            process.env.BACKEND_URL + "/api/edit_membership",
             {
               method: "PUT",
               body: JSON.stringify({
