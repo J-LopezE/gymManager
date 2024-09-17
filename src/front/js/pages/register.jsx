@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { uploadFile } from "../../../firebase/config";
 import "../../styles/login.css";
 import Gym from "../../img/gym.png";
+import Swal from "sweetalert2";
 
 export const Register = () => {
   const { store, actions } = useContext(Context);
@@ -31,21 +32,89 @@ export const Register = () => {
 
   const handleSubmitRegister = async (e) => {
     e.preventDefault();
-    let result;
-    if (profile_img_url) {
-      result = await uploadFile(profile_img_url);
-      console.log(result);
-    }
-    const response = await actions.register(
-      user.user_name,
-      user.password,
-      result,
-      user.rol,
-      user.number
-    );
-    if (response) {
-      console.log(response);
-      navigate("/");
+    const loadingAlert = Swal.fire({
+      title: "Creando usuario...",
+      text: "Estamos creando tu cuenta. Por favor, espera...",
+      icon: "info",
+      allowOutsideClick: false,
+      customClass: {
+        container: "custom-container",
+        popup: "custom-popup",
+        title: "custom-title",
+        content: "custom-content",
+      },
+      background: "rgba(0, 0, 0, 0.7)",
+      color: "#fff",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      let result = null;
+      if (profile_img_url) {
+        result = await uploadFile(profile_img_url);
+        console.log(result);
+      }
+      const response = await actions.register(
+        user.user_name,
+        user.password,
+        result,
+        user.rol,
+        user.number
+      );
+      if (response) {
+        await loadingAlert.close();
+        Swal.fire({
+          title: "Usuario creado",
+          text: "Tu cuenta ha sido creada con éxito. Puedes iniciar sesión ahora.",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+          customClass: {
+            container: "custom-container",
+            popup: "custom-popup",
+            title: "custom-title",
+            content: "custom-content",
+          },
+          background: "rgba(0, 0, 0, 0.7)",
+          color: "#fff",
+        }).then(() => {
+          navigate("/login");
+        });
+      } else {
+        await loadingAlert.close();
+        Swal.fire({
+          title: "Error",
+          text: `Hubo un problema else: ${error.message}`,
+          icon: "error",
+          confirmButtonText: "Aceptar",
+          customClass: {
+            container: "custom-container",
+            popup: "custom-popup",
+            title: "custom-title",
+            content: "custom-content",
+          },
+          background: "rgba(0, 0, 0, 0.7)",
+          color: "#fff",
+        });
+      }
+    } catch (error) {
+      await loadingAlert.close();
+      Swal.fire({
+        title: "Error",
+        text: `Hubo un problema inesperado: ${error.message}`,
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: {
+          container: "custom-container",
+          popup: "custom-popup",
+          title: "custom-title",
+          content: "custom-content",
+        },
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff",
+      });
+      console.error("Error en handleSubmitRegister:", error);
     }
   };
 

@@ -1,64 +1,47 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.dashboard {
+  margin-left: 200px;
+  padding: 40px;
 }
 
-body {
-  font-family: Arial, sans-serif;
-}
-
-.top-section {
+/* Sección de tarjetas de estadísticas */
+.statistics-section {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  flex-wrap: wrap; /* Permite que las tarjetas se envuelvan si el espacio es insuficiente */
+  gap: 20px; /* Espaciado entre las tarjetas */
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }
 
 .card {
-  width: 48%;
-  background-color: #00000077;
-  color: white;
-  border: 1px solid #1a202c;
+  width: 48%; /* Asegura que las tarjetas ocupen el espacio disponible */
+  margin: 0; /* Elimina márgenes innecesarios */
+  border-radius: 8px;
+}
+
+/* Estilo para las listas de miembros */
+.card ul {
+  padding-left: 0; /* Elimina el relleno por defecto */
+  list-style: none; /* Elimina los puntos de lista */
+}
+
+.card li {
+  margin-bottom: 5px; /* Espaciado entre elementos de la lista */
+  text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.table-container-dashboard {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.card h3 {
-  margin-bottom: 10px;
-}
-
-.bottom-section {
-  background-color: #00000077;
-  color: white;
-  border: 1px solid #1a202c;
-  padding: 20px;
-  border-radius: 5px;
-}
-
-.bottom-section h3 {
-  margin-bottom: 10px;
-}
-
-.bottom-section ul {
-  list-style: none;
-}
-
-.bottom-section ul li {
-  margin: 5px 0;
-}
-
-.back-button {
-  background-color: #eff1f5; /* Color de fondo */
-  color: rgb(15, 17, 16); /* Color del texto */
-  border: 10cap; /* Quitar el borde */
-  padding: 5px 20px; /* Espaciado interno */
-  margin: 6px; /* Espaciado externo */
-  cursor: pointer; /* Cursor tipo mano */
-  border-radius: 6px; /* Bordes redondeados */
-  font-size: 16px; /* Tamaño de fuente */
-}
-
-.back-button:hover {
-  background-color: #21b853; /* Color de fondo al pasar el ratón */
 }

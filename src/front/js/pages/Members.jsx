@@ -8,6 +8,8 @@ import { EditMembers } from "../component/EditMembers.jsx";
 import "../../styles/tables.css";
 import Table from "react-bootstrap/Table";
 import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
+import { CreateMemberships } from "../component/CreateMembership.jsx";
 
 export const Members = () => {
   const homeBackgroundStyle = {
@@ -32,8 +34,53 @@ export const Members = () => {
     }
   };
 
+  const getMembershipStatus = (startDate, endDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    end.setHours(23, 59, 59, 999);
+
+    if (today >= start && today <= end) {
+      return "Activo";
+    } else {
+      return "Inactivo";
+    }
+  };
+
   const deleteMember = (id) => {
-    actions.delete_member(id);
+    Swal.fire({
+      title: "Advertencia",
+      text: "¿Desea eliminar al miembro?",
+      position: "center",
+      icon: "error",
+      showDenyButton: true,
+      denyButtonText: "No",
+      confirmButtonText: "Si",
+      customClass: {
+        container: "custom-container",
+      },
+      background: "rgba(0, 0, 0, 0.7)",
+      color: "#fff",
+    }).then((click) => {
+      if (click.isConfirmed) {
+        actions.delete_member(id);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Miembro eliminado correctamente",
+          showConfirmButton: false,
+          timer: 1500,
+          customClass: {
+            container: "custom-container",
+          },
+          background: "rgba(0, 0, 0, 0.7)",
+          color: "#fff",
+        });
+      } else {
+        return;
+      }
+    });
   };
 
   useEffect(() => {
@@ -41,7 +88,7 @@ export const Members = () => {
     if (!jwt) {
       navigate("/login");
     }
-    const userId = getTokenInfo(); // Obtener ID del usuario
+    const userId = getTokenInfo();
 
     if (userId) {
       actions.getAllMembers();
@@ -53,7 +100,6 @@ export const Members = () => {
       className="text-center d-flex align-items-center justify-content-center"
     >
       <div className="members-container">
-        {/* Tabla */}
         <div className="table-container mx-auto">
           <div className="create-members-container d-flex float-end">
             <CreateMembers />
@@ -73,11 +119,38 @@ export const Members = () => {
             <tbody>
               {store.members.map((member) => (
                 <tr key={member.id}>
-                  <td>{member.id + 1}</td>
+                  <td>{member.id}</td>
                   <td>{member.name}</td>
                   <td>{member.last_name}</td>
-                  <td>{member.membership || "N/A"}</td>
-                  <td>{member.status || "N/A"}</td>
+                  <td>
+                    {member.memberships.length ? (
+                      member.memberships.map((suscription) => suscription.type)
+                    ) : (
+                      <CreateMemberships member={member} />
+                    )}
+                  </td>
+                  <td>
+                    {member.memberships.length
+                      ? member.memberships.map((subscription) => {
+                          console.log(
+                            "Subscription Start Date:",
+                            subscription.start_date
+                          );
+                          console.log(
+                            "Subscription End Date:",
+                            subscription.end_date
+                          );
+                          return (
+                            <div key={subscription.id}>
+                              {getMembershipStatus(
+                                subscription.start_date,
+                                subscription.end_date
+                              )}
+                            </div>
+                          );
+                        })
+                      : "N/A"}
+                  </td>
                   <td>
                     <button
                       type="button"

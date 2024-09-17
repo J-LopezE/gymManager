@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
 import Gym from "../../img/gym.png";
+import Swal from "sweetalert2";
 
 export const Login = () => {
   const { store, actions } = useContext(Context);
@@ -17,15 +18,48 @@ export const Login = () => {
     height: "100vh",
     width: "100%",
   };
+  const showLoadingAlert = () => {
+    return Swal.fire({
+      title: "Iniciando sesión...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      customClass: {
+        container: "custom-container",
+        popup: "custom-popup",
+        title: "custom-title",
+        content: "custom-content",
+      },
+      background: "rgba(0, 0, 0, 0.7)",
+      color: "#fff",
+    });
+  };
 
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
+    const loadingAlert = showLoadingAlert();
+    await new Promise((resolve) => setTimeout(resolve, 800));
     const isLoggedIn = await actions.login(user_name, password);
+    await Swal.close();
+
     if (isLoggedIn) {
       navigate("/");
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "Nombre de usuario o contraseña incorrectos.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: {
+          container: "custom-container",
+        },
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff",
+      });
     }
   };
-
   return (
     <div style={homeBackgroundStyle} className="text-center">
       <div className="container login-home">

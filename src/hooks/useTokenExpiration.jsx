@@ -29,6 +29,14 @@ const useTokenExpiration = () => {
         title: "Sesión expirada",
         text: "Tu sesión ha expirado por inactividad. Por favor, vuelve a iniciar sesión.",
         confirmButtonText: "Aceptar",
+        customClass: {
+          container: "custom-container",
+          popup: "custom-popup",
+          title: "custom-title",
+          content: "custom-content",
+        },
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#fff",
       }).then(() => {
         navigate("/login");
       });

@@ -25,11 +25,11 @@ def signup():
     number = body.get ("number", None)
 
     if User.query.filter_by(user_name = user_name).first() is not None:
-        return jsonify({"error": "ese nombre de usuario ya esta siendo utilizado"}), 400
+        return jsonify({"error": "Ese nombre de usuario ya esta siendo utilizado"}), 400
     if User.query.filter_by(number = number).first() is not None:
-        return jsonify({"error": "ese numero de empleado ya esta siendo utilizado"}), 400
+        return jsonify({"error": "Ese numero de empleado ya esta siendo utilizado"}), 400
     if user_name is None or password is None or profile_img_url is None or rol is None or number is None:
-        return jsonify({"error": "todos los campos son requeridos"}), 400
+        return jsonify({"error": "Todos los campos son requeridos"}), 400
     password_hash = generate_password_hash(password)
     try:
         new_user = User(user_name=user_name, password=password_hash, profile_img_url=profile_img_url, rol=rol, number=number)
@@ -244,26 +244,44 @@ def create_membership():
         return jsonify({"new_membership": new_membership.serialize()}), 201
     except Exception as error:
         db.session.rollback()
+        return jsonify({"error": f"{error}"}), 500
+
+#ENDPOINT PARA EDITAR MEMBRESÍA
+
+@api.route('/edit_membership', methods=['PUT'])
+@jwt_required()
+def edit_membership():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        membership_id = body.get("id")
+        user_id = user_data["id"]
+        
+        if not membership_id or not user_id:
+            return jsonify({'error': 'Missing member ID or user ID'}), 400
+        
+        membership = Membership.query.filter_by(id=membership_id, user_id=user_id).first()
+        if membership is None:
+            return jsonify({'error': 'Membership no found'}), 404
+        membership.type = body.get("type", membership.type)
+        membership.start_date = body.get("start_date", membership.start_date)
+        membership.end_date = body.get("end_date", membership.end_date)
+        membership.member_id = body.get("member_id", membership.member_id)
+        db.session.commit()
+        return jsonify({"message": "Membership update successsfully"}), 200
+    except Exception as error:
         return jsonify({"error": f"{error}"}), 500    
 
 #ENDPOINT PARA OBTENER TODAS LAS MEMBRESÍAS
     
 @api.route('/memberships', methods=['GET'])
 def get_all_memberships():
-    memberships = Membership.query.all()
-    if not memberships:
-        return jsonify({"error": "Aún no hay membresias"}), 404
-    memberships_data = [
-        {
-            "id": membership.id,
-            "user_id": membership.user_id,
-            "type": membership.type,
-            "start_date": membership.start_date,
-            "end_date": membership.end_date,
-            "member_id": membership.member_id,
-        } for membership in memberships
-    ]
-    return jsonify(memberships_data), 200
+    try:
+        memberships = Membership.query.all()
+        membership_list = [membership.serialize() for membership in memberships]
+        return jsonify({"memberships": membership_list}), 200
+    except Exception as error:
+        return jsonify({"error": f"{error}"}), 500
 
 #ENDPOINT PARA OBTENER LAS MEMBRESIAS DE UN MIEMBRO DETERMINADO
 
@@ -276,6 +294,25 @@ def get_member_memberships(id):
             return  jsonify({'error': 'miembro no encontrado'}),404
         membership_list = [membership.serialize() for membership in member.memberships]
         return jsonify({"memberships": membership_list}), 200
+    except Exception as error:
+        return jsonify({"error": f"{error}"}), 500
+
+#Endpoint para borrar Member REQUIERE TOKEN
+
+@api.route('/delete_membership', methods=['DELETE'])
+@jwt_required()
+def delete_membership():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        membership_id = body.get("id", None)
+        
+        membership = Membership.query.filter_by(id=membership_id).first()
+        if membership is  None:
+            return jsonify({'error': 'Membership no found'}), 404
+        db.session.delete(membership)
+        db.session.commit()
+        return jsonify({"message": f"Membership removed"}), 200
     except Exception as error:
         return jsonify({"error": f"{error}"}), 500
     

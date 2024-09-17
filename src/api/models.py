@@ -68,6 +68,7 @@ class Member(db.Model):
             "objectives": self.objectives,
             "payemenet_type": self.payement_type,
             "refered": self.refered,
+            "memberships": [membership.serialize() for membership in self.memberships]
         }
     
 
@@ -93,6 +94,7 @@ class Membership(db.Model):
             "start_date": self.start_date,
             "end_date": self.end_date,
             "member_id": self.member_id,
+            "disciplines": [discipline.serialize() for discipline in self.disciplines]
         }
     
 class Discipline(db.Model):

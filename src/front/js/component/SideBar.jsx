@@ -9,6 +9,7 @@ const SideBar = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   const user = store.me;
+  const jwt = localStorage.getItem("token");
 
   const Logout = () => {
     actions.logout();
@@ -43,7 +44,7 @@ const SideBar = () => {
         <li>
           <button
             className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/subscription")}
+            onClick={() => navigate("/membership")}
           >
             <i className="fas fa-clipboard-list"></i> Membresías
           </button>
@@ -57,7 +58,7 @@ const SideBar = () => {
           </button>
         </li>
       </ul>
-      <div className={user ? "d-flex user-section" : "d-none"}>
+      <div className={!jwt ? "d-none" : "d-flex user-section"}>
         <button className="user-button">
           <img
             src={user ? user.profile_img_url : DefaultUserImage}
@@ -68,8 +69,11 @@ const SideBar = () => {
             {user ? user.user_name : "Jhon Doe"}
           </span>
         </button>
-        <button className="rounded p-2 m-3" onClick={() => Logout()}>
-          cerrar sesion
+        <button
+          className="btn-session btn-primary rounded p-2 m-3"
+          onClick={() => Logout()}
+        >
+          <i className="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
     </div>
