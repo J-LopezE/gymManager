@@ -17,64 +17,59 @@ const SideBar = () => {
   };
 
   return (
-    <div className="sidebar text-center mt-5">
-      <img
-        className="m-4"
-        src={Logo}
-        alt="Logo"
-        style={{ width: "180px", height: "auto" }}
-      />
-      <ul>
-        <li>
-          <button
-            className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/")}
-          >
-            <i className="fas fa-tachometer-alt"></i> Dashboard
+    <div className="sidebar-container">
+      <div className="sidebar">
+        <img className="logo" src={Logo} alt="Logo" />
+        <ul className="sidebar-menu">
+          <li className="mb-4">
+            <button className="sidebar-button" onClick={() => navigate("/")}>
+              <i className="fas fa-tachometer-alt "></i>
+              <span className="sidebar-tooltip">Dashboard</span>
+            </button>
+          </li>
+          <li className="mb-4">
+            <button
+              className="sidebar-button"
+              onClick={() => navigate("/members")}
+            >
+              <i className="fas fa-users"></i>
+              <span className="sidebar-tooltip">Miembros</span>
+            </button>
+          </li>
+          <li className="mb-4">
+            <button
+              className="sidebar-button"
+              onClick={() => navigate("/membership")}
+            >
+              <i className="fas fa-clipboard-list"></i>
+              <span className="sidebar-tooltip">Membresías</span>
+            </button>
+          </li>
+          <li className="mb-4">
+            <button
+              className="sidebar-button"
+              onClick={() => navigate("/users")}
+            >
+              <i className="fas fa-user-plus"></i>
+              <span className="sidebar-tooltip">Usuarios</span>
+            </button>
+          </li>
+        </ul>
+        <div className={!jwt ? "d-none" : "user-section"}>
+          <button className="user-button">
+            <img
+              src={user ? user.profile_img_url : DefaultUserImage}
+              alt="User"
+              className="user-image"
+            />
+            <span className="user-name">
+              {user ? user.user_name : "Jhon Doe"}
+            </span>
           </button>
-        </li>
-        <li>
-          <button
-            className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/members")}
-          >
-            <i className="fas fa-users"></i> Miembros
+          <button className="btn-session" onClick={() => Logout()}>
+            <i className="fa-solid fa-right-from-bracket"></i>
           </button>
-        </li>
-        <li>
-          <button
-            className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/membership")}
-          >
-            <i className="fas fa-clipboard-list"></i> Membresías
-          </button>
-        </li>
-        <li>
-          <button
-            className="sidebar-button m-2 mt-3"
-            onClick={() => navigate("/users")}
-          >
-            <i className="fas fa-user-plus"></i> Usuarios
-          </button>
-        </li>
-      </ul>
-      <div className={!jwt ? "d-none" : "d-flex user-section"}>
-        <button className="user-button">
-          <img
-            src={user ? user.profile_img_url : DefaultUserImage}
-            alt="User"
-            className="user-image"
-          />
-          <span className="user-name text-light">
-            {user ? user.user_name : "Jhon Doe"}
-          </span>
-        </button>
-        <button
-          className="btn-session btn-primary rounded p-2 m-3"
-          onClick={() => Logout()}
-        >
-          <i className="fa-solid fa-right-from-bracket"></i>
-        </button>
+        </div>
       </div>
     </div>
   );
