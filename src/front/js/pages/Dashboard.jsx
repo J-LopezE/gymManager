@@ -23,7 +23,7 @@ const Dashboard = () => {
       return;
     }
     actions.getAllMembers();
-  }, [actions, navigate]);
+  }, []);
 
   const getMembershipStatus = (startDate, endDate) => {
     const today = new Date();

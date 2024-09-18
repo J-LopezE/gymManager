@@ -1,59 +1,124 @@
+/* sideBar.css */
+
+/* Colores */
+:root {
+  --bg-color: rgba(0, 0, 0, 0.6); /* Fondo negro tipo glass */
+  --text-color: #ffffff; /* Blanco para texto */
+  --tooltip-bg: #333333; /* Fondo del tooltip */
+  --tooltip-text: #f8f8ff; /* Texto del tooltip */
+  --button-color: #7ed957; /* Color primario azul cielo profundo */
+  --icon-color: #7ed957; /* Gris claro para los íconos */
+}
+
+/* Contenedor para la barra lateral para manejar la posición */
+.sidebar-container {
+  position: relative;
+}
+
+/* Estilos para la barra lateral */
 .sidebar {
-  height: 90vh;
-  width: 250px;
-  left: 0;
   position: fixed;
-  border-radius: 10px;
-  background-color: #111111c7;
-  padding: 20px;
-  margin-left: 5px;
-  display: flex; /* Add this */
-  flex-direction: column; /* Add this */
-  z-index: 20;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 80px; /* Ancho reducido cuando está colapsada */
+  background: var(--bg-color); /* Fondo negro tipo glass */
+  backdrop-filter: blur(10px); /* Efecto de vidrio esmerilado */
+  color: var(--text-color); /* Color del texto */
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  z-index: 1000;
+  font-family: "Roboto", sans-serif; /* Fuente para el texto principal */
 }
 
-.sidebar h2 {
-  color: white;
-  text-align: center;
+/* Estado expandido de la barra lateral cuando se pasa el cursor */
+.sidebar:hover {
+  width: 210px; /* Ancho expandido */
 }
 
-.sidebar ul {
-  list-style-type: none; /* Removes bullet points */
-  padding: 0; /* Removes default padding */
-  margin: 0; /* Removes default margin */
+/* Estilos para el menú */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .sidebar-button {
-  align-items: center;
-  background: #ffffff;
-  border: 0 solid #e2e8f0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-  color: #1a202c;
-  display: inline-flex;
-  font-family: Inter, sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  height: 56px;
-  justify-content: center;
-  line-height: 24px;
-  overflow-wrap: break-word;
-  padding: 24px;
-  text-decoration: none;
-  width: 150px;
-  border-radius: 8px;
+  background: none;
+  border: none;
+  color: var(--text-color); /* Color del texto en botones */
   cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  font-size: 24px; /* Ajusta el tamaño del ícono */
+  width: 100%;
+  padding: 10px;
+  text-align: left; /* Alinea el texto a la izquierda */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.sidebar-button:hover {
+  box-shadow: 0 0 10px var(--button-color); /* Sombra brillante */
 }
 
+/* Estilos para el tooltip */
+.sidebar-button .sidebar-tooltip {
+  position: absolute;
+  left: 20%; /* Posiciona el tooltip a la derecha del botón */
+  white-space: nowrap;
+  color: var(--tooltip-text); /* Texto del tooltip */
+  padding: 5px;
+  border-radius: 3px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  margin-left: 5px; /* Espacio entre el botón y el tooltip */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1100; /* Asegura que el tooltip esté por encima de otros elementos */
+  white-space: nowrap; /* Asegura que el texto no se corte */
+}
+
+/* Muestra el tooltip cuando se pasa el cursor sobre el botón o sobre la barra lateral */
+.sidebar-button:hover .sidebar-tooltip,
+.sidebar:hover .sidebar-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Estilos para el logo */
+.logo {
+  width: 60%;
+  margin-bottom: 50px;
+}
+
+/* Estilos para la sección de usuario */
 .user-section {
-  margin-top: auto; /* Pushes the user section to the bottom */
-  padding: 10px;
-  text-align: center;
-  border-top: white 1px solid;
+  display: flex;
+  flex-direction: column; /* Alinea los elementos verticalmente cuando está colapsada */
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 0 10px; /* Padding para el espaciado */
+  transition: flex-direction 0.3s ease, align-items 0.3s ease; /* Transición suave */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Espacio entre la imagen y el ícono */
+}
+
+/* Alinea los elementos horizontalmente cuando está expandida */
+.sidebar:hover .user-section {
+  flex-direction: row; /* Alinea horizontalmente cuando está expandida */
+  align-items: center; /* Alinea los elementos verticalmente */
+  padding-left: 10px; /* Asegura que los elementos estén alineados con el borde izquierdo */
 }
 
 .user-button {
@@ -65,23 +130,59 @@
 }
 
 .user-image {
-  width: 30px;
-  height: 30px;
+  width: 50px; /* Ajusta el tamaño de la imagen del usuario */
+  height: 50px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 15px; /* Espacio entre la imagen y el nombre en vista expandida */
 }
 
+/* Muestra el nombre solo cuando la barra lateral está expandida */
 .user-name {
-  font-size: 15px;
+  display: none;
+  margin-left: 10px;
+  color: var(--text-color); /* Color del nombre del usuario */
 }
 
-.fas {
-  margin: 10px;
-  height: 20px;
-  width: auto;
+.sidebar:hover .user-name {
+  display: inline; /* Muestra el nombre cuando la barra lateral está expandida */
 }
 
+/* Estilos para el botón de sesión */
 .btn-session {
+  background: none;
   border: none;
-  color: rgb(255, 255, 255);
+  color: var(--button-color); /* Color del botón de sesión */
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Ajusta la alineación y el espaciado cuando la barra lateral está colapsada */
+.sidebar .user-section {
+  flex-direction: column; /* Apila verticalmente cuando está colapsada */
+  align-items: center;
+}
+
+.sidebar .user-info {
+  margin-bottom: 0; /* Elimina el margen inferior cuando está colapsada */
+}
+
+.sidebar .btn-session {
+  margin-top: 5px; /* Espacio entre la información del usuario y el botón de sesión */
+}
+
+/* Ajusta la posición del botón de sesión cuando la barra lateral está expandida */
+.sidebar:hover .btn-session {
+  margin-left: 20px; /* Añade margen para separar del info del usuario */
+}
+
+/* Aumenta el tamaño del ícono para mejor visibilidad */
+.sidebar-button i {
+  font-size: 23px; /* Ajusta el tamaño del ícono según sea necesario */
+  color: var(--icon-color); /* Color de los íconos */
+}
+
+/* Asegura que el tooltip sea visible y no se corte */
+.sidebar:hover .sidebar-tooltip {
+  visibility: visible;
+  opacity: 1;
 }
