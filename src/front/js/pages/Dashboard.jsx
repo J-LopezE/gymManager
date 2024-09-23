@@ -25,7 +25,7 @@ const Dashboard = () => {
       return;
     }
     actions.getAllMembers().finally(() => setLoading(false));
-  }, [actions, navigate]);
+  }, [actions.getAllMembers, navigate]);
 
   // Función para calcular el estado de una membresía
   const getMembershipStatus = (startDate, endDate) => {
