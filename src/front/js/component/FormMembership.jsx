@@ -62,6 +62,7 @@ export const FormMembership = ({
           );
       console.log(id);
       actions.getAllMemberships();
+      actions.getAllMembers();
       Swal.fire({
         position: "center",
         icon: "success",
