@@ -101,8 +101,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         stature,
         weight,
         objectives,
-        payement_type,
-        refered
+        payment_type,
+        refered,
+        start_date,
+        end_date,
+        status
       ) => {
         const jwt = localStorage.getItem("token");
         const store = getStore();
@@ -129,8 +132,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                 stature,
                 weight,
                 objectives,
-                payement_type,
+                payment_type,
                 refered,
+                start_date,
+                end_date,
+                status,
               }),
             }
           );
@@ -138,7 +144,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             console.log(response);
           }
           const data = await response.json();
-          console.log(data);
           actions.getAllMembers();
           return data;
         } catch (error) {
@@ -162,7 +167,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           if (response.ok) {
             setStore({ members: data.members });
-            console.log(data.members);
           } else {
             console.log(data.error || "Error al obtener miembros del usuario");
           }
@@ -210,8 +214,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         stature,
         weight,
         objectives,
-        payement_type,
-        refered
+        payment_type,
+        refered,
+        start_date,
+        end_date,
+        status
       ) => {
         const actions = getActions();
         const jwt = localStorage.getItem("token");
@@ -235,8 +242,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                 stature,
                 weight,
                 objectives,
-                payement_type,
+                payment_type,
                 refered,
+                start_date,
+                end_date,
+                status,
               }),
               headers: {
                 "Content-type": "application/json",
@@ -292,12 +302,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({
           id_member: id,
         });
-        console.log(id);
       },
 
       //ADD MEMBERSHIP
 
-      add_membership: async (type, start_date, end_date) => {
+      add_membership: async (type, price, time) => {
         const jwt = localStorage.getItem("token");
         const store = getStore();
         const member_id = store.id_member;
@@ -313,8 +322,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
               body: JSON.stringify({
                 type,
-                start_date,
-                end_date,
+                price,
+                time,
                 member_id,
               }),
             }
@@ -375,7 +384,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       // EDIT MEMBERSHIP
-      editMembership: async (id, type, start_date, end_date, member_id) => {
+      editMembership: async (id, type, price, time, member_id) => {
         const actions = getActions();
         const jwt = localStorage.getItem("token");
 
@@ -387,8 +396,8 @@ const getState = ({ getStore, getActions, setStore }) => {
               body: JSON.stringify({
                 id,
                 type,
-                start_date,
-                end_date,
+                price,
+                time,
                 member_id,
               }),
               headers: {

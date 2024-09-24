@@ -41,6 +41,10 @@ export const Members = () => {
 
     end.setHours(23, 59, 59, 999);
 
+    console.log(today);
+    console.log(start);
+    console.log(end);
+
     if (today >= start && today <= end) {
       return "Activo";
     } else {
@@ -129,28 +133,7 @@ export const Members = () => {
                       <CreateMemberships member={member} />
                     )}
                   </td>
-                  <td>
-                    {member.memberships.length
-                      ? member.memberships.map((subscription) => {
-                          console.log(
-                            "Subscription Start Date:",
-                            subscription.start_date
-                          );
-                          console.log(
-                            "Subscription End Date:",
-                            subscription.end_date
-                          );
-                          return (
-                            <div key={subscription.id}>
-                              {getMembershipStatus(
-                                subscription.start_date,
-                                subscription.end_date
-                              )}
-                            </div>
-                          );
-                        })
-                      : "N/A"}
-                  </td>
+                  <td>{member.status}</td>
                   <td>
                     <button
                       type="button"

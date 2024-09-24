@@ -13,8 +13,8 @@ export const FormMembership = ({
   const navigate = useNavigate();
   const [membership, setMembership] = useState({
     type: "",
-    start_date: "",
-    end_date: "",
+    price: "",
+    time: "",
     member_id: "",
   });
   const [loading, setLoading] = useState(false);
@@ -50,14 +50,14 @@ export const FormMembership = ({
         ? await actions.editMembership(
             id,
             membership.type,
-            membership.start_date,
-            membership.end_date,
+            membership.price,
+            membership.time,
             membership.member_id
           )
         : await actions.add_membership(
             membership.type,
-            membership.start_date,
-            membership.end_date,
+            membership.price,
+            membership.time,
             membership.member_id
           );
       console.log(id);
@@ -82,8 +82,8 @@ export const FormMembership = ({
       if (!id) {
         setMembership({
           type: "",
-          start_date: "",
-          end_date: "",
+          price: "",
+          time: "",
           member_id: "",
         });
       }
@@ -116,8 +116,8 @@ export const FormMembership = ({
     if (initialMembership) {
       setMembership({
         type: initialMembership.type || "",
-        start_date: initialMembership.start_date || "",
-        end_date: initialMembership.end_date || "",
+        price: initialMembership.price || "",
+        time: initialMembership.time || "",
         member_id: initialMembership.member_id || "",
       });
     }
@@ -144,11 +144,11 @@ export const FormMembership = ({
           </div>
           <div className="col-md-6 mb-3">
             <input
-              type="date"
+              type="text"
               className="form-members-input"
-              id="start_date"
-              value={membership.start_date}
-              name="start_date"
+              id="price"
+              value={membership.price}
+              name="price"
               onChange={handleChange}
             />
           </div>
@@ -156,11 +156,11 @@ export const FormMembership = ({
         <div className="row">
           <div className="col-md-4 mb-3">
             <input
-              type="date"
+              type="text"
               className="form-members-input"
-              id="end_date"
-              value={membership.end_date}
-              name="end_date"
+              id="time"
+              value={membership.time}
+              name="time"
               onChange={handleChange}
             />
           </div>
