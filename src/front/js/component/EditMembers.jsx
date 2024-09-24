@@ -3,7 +3,6 @@ import { FormMembers } from "./FormMembers.jsx";
 import "../../styles/editMembers.css";
 
 export const EditMembers = ({ member }) => {
-  console.log(member);
   if (!member) {
     return <p>No se encontró el miembro.</p>;
   }

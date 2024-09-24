@@ -22,8 +22,11 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
     stature: "",
     weight: "",
     objectives: "",
-    payement_type: "",
+    payment_type: "",
     refered: "",
+    start_date: "",
+    end_date: "",
+    status: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -81,8 +84,11 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             member.stature,
             member.weight,
             member.objectives,
-            member.payement_type,
-            member.refered
+            member.payment_type,
+            member.refered,
+            member.start_date,
+            member.end_date,
+            member.status
           )
         : await actions.add_member(
             member.name,
@@ -97,8 +103,11 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             member.stature,
             member.weight,
             member.objectives,
-            member.payement_type,
-            member.refered
+            member.payment_type,
+            member.refered,
+            member.start_date,
+            member.end_date,
+            member.status
           );
 
       actions.getAllMembers();
@@ -131,7 +140,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
           stature: "",
           weight: "",
           objectives: "",
-          payement_type: "",
+          payment_type: "",
           refered: "",
         });
         setImagePreview("");
@@ -175,8 +184,11 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         stature: initialMember.stature || "",
         weight: initialMember.weight || "",
         objectives: initialMember.objectives || "",
-        payement_type: initialMember.payement_type || "",
+        payment_type: initialMember.payment_type || "",
         refered: initialMember.refered || "",
+        start_date: initialMember.start_date || "",
+        end_date: initialMember.end_date || "",
+        status: initialMember.status || "",
       });
       setImagePreview(initialMember.profile_img_url || "");
     }
@@ -314,9 +326,9 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
           <div className="col-md-6 mb-3">
             <select
               className="form-members-select"
-              id="payement_type"
-              name="payement_type"
-              value={member.payement_type}
+              id="payment_type"
+              name="payment_type"
+              value={member.payment_type}
               onChange={handleChange}
               required
             >
@@ -341,6 +353,39 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               required
             ></textarea>
           </div>
+          <div className="col-md-4 mb-3">
+            <input
+              type="date"
+              className="form-members-input"
+              id="start_date"
+              value={member.start_date}
+              name="start_date"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="col-md-4 mb-3">
+            <input
+              type="date"
+              className="form-members-input"
+              id="end_date"
+              value={member.end_date}
+              name="end_date"
+              onChange={handleChange}
+            />
+          </div>
+          <select
+            className="form-members-select"
+            id="status"
+            name="status"
+            value={member.status}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Selecciona el estado de la membresía</option>
+            <option value="Activa">Activa</option>
+            <option value="Suspendida">Suspendida</option>
+            <option value="Finalizada">Finalizada</option>
+          </select>
           <div className="col-md-6 mb-2">
             <div className="d-flex flex-column">
               <input
