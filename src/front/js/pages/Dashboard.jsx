@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [warnings, setWarnings] = useState([]); // Estado para almacenar advertencias de miembros
 
   const homeBackgroundStyle = {
-    backgroundImage: `url(${Gym})`,
+    backgroundImage: `url(${Gym})`, // Corregido con backticks
     backgroundSize: "cover",
     backgroundPosition: "center",
     height: "100vh",
@@ -24,8 +24,13 @@ const Dashboard = () => {
       navigate("/login");
       return;
     }
+
+    actions.getAllMembers(); // Llama a la acción para obtener los miembros
+  }, [actions, navigate]);
+=======
     actions.getAllMembers().finally(() => setLoading(false));
   }, [actions.getAllMembers, navigate]);
+
 
   // Función para calcular el estado de una membresía
   const getMembershipStatus = (startDate, endDate) => {
@@ -157,6 +162,126 @@ const Dashboard = () => {
     <div style={homeBackgroundStyle} className="text-center">
       <div className="dashboard">
         <div className="container">
+
+          
+          {/* Tabla de Miembros Activos */}
+          <div className="mb-4 mt-5">
+            <h5 className="text-white">Miembros Activos</h5>
+            <div className="table-container-dashboard">
+              <table className="table table-dark table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Miembros</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getActiveMembers().length > 0 ? (
+                    getActiveMembers().map((member, index) => (
+                      <tr key={member.id}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{member.name}</td>
+                        <td>{member.status}</td>
+                        <td>
+                          <button className="btn btn-danger btn-sm mx-1">
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                          <button className="btn btn-primary btn-sm mx-1">
+                            <i className="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4">No hay miembros activos.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Tabla de Miembros Inactivos */}
+          <div className="mb-4 mt-5">
+            <h5 className="text-white">Miembros Inactivos</h5>
+            <div className="table-container-dashboard">
+              <table className="table table-dark table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Miembros</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getInactiveMembers().length > 0 ? (
+                    getInactiveMembers().map((member, index) => (
+                      <tr key={member.id}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{member.name}</td>
+                        <td>{member.status}</td>
+                        <td>
+                          <button className="btn btn-danger btn-sm mx-1">
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                          <button className="btn btn-primary btn-sm mx-1">
+                            <i className="fas fa-edit"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4">No hay miembros inactivos.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Tabla General */}
+          <div className="table-container-dashboard">
+            <h5 className="text-white">Todos los Miembros</h5>
+            <table className="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Miembros</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {store.members && store.members.length > 0 ? (
+                  store.members.map((member, index) => (
+                    <tr key={member.id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{member.name}</td>
+                      <td>{member.status}</td>
+                      <td>
+                        <button className="btn btn-danger btn-sm mx-1">
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
+                        <button className="btn btn-primary btn-sm mx-1">
+                          <i className="fas fa-edit"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4">No hay membresías próximas a vencer.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
           {loading ? (
             <p>Cargando...</p>
           ) : (
@@ -250,6 +375,7 @@ const Dashboard = () => {
               </div>
             </>
           )}
+
         </div>
       </div>
     </div>
