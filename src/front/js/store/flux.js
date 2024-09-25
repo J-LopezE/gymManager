@@ -261,7 +261,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           console.log(data);
           if (response.ok) {
-            actions.getAllMembers();
+            actions.getAllMemberships();
             return true;
           }
         } catch (error) {

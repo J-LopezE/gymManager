@@ -22,8 +22,9 @@ const Dashboard = () => {
       navigate("/login");
       return;
     }
-    actions.getAllMembers(); // Llama a la acción para obtener los miembros
-  }, [actions, navigate]);
+    actions.getAllMembers();
+    actions.getAllMemberships();
+  }, []);
 
   // Filtra miembros activos
   const getActiveMembers = () => {

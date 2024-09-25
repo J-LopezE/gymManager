@@ -23,6 +23,7 @@ export const Membership = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   useTokenExpiration();
+
   const getTokenInfo = () => {
     const token = localStorage.getItem("token");
     if (!token) return null;
@@ -76,7 +77,6 @@ export const Membership = () => {
     if (!jwt) {
       navigate("/login");
     }
-    actions.getAllMemberships();
   }, []);
 
   return (
@@ -95,10 +95,10 @@ export const Membership = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Miembro</th>
                 <th>Tipo</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Final</th>
+                <th>precio ($)</th>
+                <th>Duración (meses)</th>
+                <th>Miembros</th>
                 <th colSpan={2}>Acciones</th>
               </tr>
             </thead>
@@ -106,13 +106,10 @@ export const Membership = () => {
               {store.memberships.map((membership) => (
                 <tr key={membership.id}>
                   <td>{membership.id}</td>
-                  <td>
-                    <a href="">{membership.member_id}</a>
-                  </td>
                   <td>{membership.type}</td>
-                  <td>{membership.start_date}</td>
-                  <td>{membership.end_date}</td>
-
+                  <td>{membership.price}</td>
+                  <td>{membership.time}</td>
+                  <td>{membership.members.length}</td>
                   <td>
                     <button
                       type="button"

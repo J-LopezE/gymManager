@@ -91,8 +91,6 @@ export const Members = () => {
     if (!jwt) {
       navigate("/login");
     }
-    const userId = getTokenInfo();
-    actions.getAllMembers();
   }, []);
   return (
     <div
@@ -104,38 +102,54 @@ export const Members = () => {
           <div className="create-members-container d-flex float-end">
             <CreateMembers />
           </div>
-
-          <Table striped bordered hover variant="dark" className="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Estado</th>
-                <th colSpan={2}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {store.members.map((member) => (
-                <tr key={member.id}>
-                  <td>{member.id}</td>
-                  <td>{member.name}</td>
-                  <td>{member.last_name}</td>
-                  <td>{member.status}</td>
-                  <td>
-                    <button
-                      type="button"
-                      onClick={(e) => deleteMember(member.id)}
-                      className="btn btn-danger me-5"
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                    <EditMembers member={member} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          {store.memberships.map((membership) => (
+            <>
+              {membership.members.length > 0 ? (
+                <Table
+                  striped
+                  bordered
+                  hover
+                  variant="dark"
+                  className="table"
+                  key={membership.id}
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Membresía</th>
+                      <th>Estado</th>
+                      <th colSpan={2}>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {membership.members.map((member) => (
+                      <tr key={member.id}>
+                        <td>{member.id}</td>
+                        <td>{member.name}</td>
+                        <td>{member.last_name}</td>
+                        <td>{membership.type}</td>
+                        <td>{member.status}</td>
+                        <td>
+                          <button
+                            type="button"
+                            onClick={(e) => deleteMember(member.id)}
+                            className="btn btn-danger me-5"
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </button>
+                          <EditMembers member={member} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                <p className="d-none"></p>
+              )}
+            </>
+          ))}
         </div>
       </div>
     </div>

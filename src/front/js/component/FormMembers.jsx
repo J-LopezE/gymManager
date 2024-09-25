@@ -112,8 +112,6 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             member.end_date,
             member.status
           );
-
-      actions.getAllMembers();
       Swal.fire({
         position: "center",
         icon: "success",
@@ -198,7 +196,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
       });
       setImagePreview(initialMember.profile_img_url || "");
     }
-  }, [initialMember, navigate]);
+  }, []);
 
   return (
     <div className="form-members-container">

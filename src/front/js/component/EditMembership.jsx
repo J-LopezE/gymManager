@@ -3,7 +3,6 @@ import "../../styles/editMembers.css";
 import { FormMembership } from "./FormMembership.jsx";
 
 export const EditMembership = ({ membership }) => {
-  console.log(membership);
   if (!membership) {
     return <p>No se encontró el miembresia.</p>;
   }
