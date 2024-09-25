@@ -9,7 +9,6 @@ import "../../styles/tables.css";
 import Table from "react-bootstrap/Table";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
-import { CreateMemberships } from "../component/CreateMembership.jsx";
 
 export const Members = () => {
   const homeBackgroundStyle = {
@@ -31,6 +30,24 @@ export const Members = () => {
     } catch (error) {
       console.error("Error decoding token:", error);
       return null;
+    }
+  };
+
+  const getMembershipStatus = (startDate, endDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    end.setHours(23, 59, 59, 999);
+
+    console.log(today);
+    console.log(start);
+    console.log(end);
+
+    if (today >= start && today <= end) {
+      return "Activo";
+    } else {
+      return "Inactivo";
     }
   };
 
@@ -75,10 +92,7 @@ export const Members = () => {
       navigate("/login");
     }
     const userId = getTokenInfo();
-
-    if (userId) {
-      actions.getAllMembers();
-    }
+    actions.getAllMembers();
   }, []);
   return (
     <div
@@ -97,7 +111,6 @@ export const Members = () => {
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Membresía</th>
                 <th>Estado</th>
                 <th colSpan={2}>Acciones</th>
               </tr>
@@ -105,13 +118,10 @@ export const Members = () => {
             <tbody>
               {store.members.map((member) => (
                 <tr key={member.id}>
-                  <td>{member.id + 1}</td>
+                  <td>{member.id}</td>
                   <td>{member.name}</td>
                   <td>{member.last_name}</td>
-                  <td>
-                    {member.membership || <CreateMemberships member={member} />}
-                  </td>
-                  <td>{member.status || "N/A"}</td>
+                  <td>{member.status}</td>
                   <td>
                     <button
                       type="button"

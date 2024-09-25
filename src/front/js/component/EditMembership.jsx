@@ -1,10 +1,11 @@
 import React from "react";
-import { FormMembers } from "./FormMembers.jsx";
 import "../../styles/editMembers.css";
+import { FormMembership } from "./FormMembership.jsx";
 
-export const EditMembers = ({ member }) => {
-  if (!member) {
-    return <p>No se encontró el miembro.</p>;
+export const EditMembership = ({ membership }) => {
+  console.log(membership);
+  if (!membership) {
+    return <p>No se encontró el miembresia.</p>;
   }
   return (
     <>
@@ -12,25 +13,25 @@ export const EditMembers = ({ member }) => {
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target={`#edit-member-${member.id}`}
+        data-bs-target={`#edit-membership-${membership.id}`}
       >
         <i className="fa-solid fa-pencil"></i>
       </button>
 
       <div
         className="modal fade"
-        id={`edit-member-${member.id}`}
+        id={`edit-membership-${membership.id}`}
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex="-1"
-        aria-labelledby={`edit-member-${member.id}-label`}
+        aria-labelledby={`edit-membership-${membership.id}-label`}
       >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h1
                 className="modal-title fs-5"
-                id={`edit-member-${member.id}-label`}
+                id={`edit-membership-${membership.id}-label`}
               >
                 Editar Miembro
               </h1>
@@ -42,10 +43,10 @@ export const EditMembers = ({ member }) => {
               ></button>
             </div>
             <div className="modal-body">
-              <FormMembers
-                btnMember={"Actualizar"}
-                member={member}
-                id={member.id}
+              <FormMembership
+                btnMembership={"Actualizar"}
+                membership={membership}
+                id={membership.id}
               />
             </div>
           </div>

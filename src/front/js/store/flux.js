@@ -5,6 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       members: [],
       id_member: [],
       memberships: [],
+      member_memberships: [],
       rol: ["Administrador", "Empleado"],
     },
     actions: {
@@ -88,6 +89,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       //ADD MEMBER
       add_member: async (
+        membership_id,
         name,
         last_name,
         profile_img_url,
@@ -100,8 +102,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         stature,
         weight,
         objectives,
-        payement_type,
-        refered
+        payment_type,
+        refered,
+        start_date,
+        end_date,
+        status
       ) => {
         const jwt = localStorage.getItem("token");
         const store = getStore();
@@ -116,6 +121,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 authorization: `Bearer ${jwt}`,
               },
               body: JSON.stringify({
+                membership_id,
                 name,
                 last_name,
                 profile_img_url,
@@ -128,8 +134,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                 stature,
                 weight,
                 objectives,
-                payement_type,
+                payment_type,
                 refered,
+                start_date,
+                end_date,
+                status,
               }),
             }
           );
@@ -137,7 +146,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             console.log(response);
           }
           const data = await response.json();
-          console.log(data);
           actions.getAllMembers();
           return data;
         } catch (error) {
@@ -196,6 +204,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       // EDIT MEMBER
       editMember: async (
         id,
+        membership_id,
         name,
         last_name,
         profile_img_url,
@@ -208,8 +217,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         stature,
         weight,
         objectives,
-        payement_type,
-        refered
+        payment_type,
+        refered,
+        start_date,
+        end_date,
+        status
       ) => {
         const actions = getActions();
         const jwt = localStorage.getItem("token");
@@ -222,6 +234,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               body: JSON.stringify({
                 id,
                 name,
+                membership_id,
                 last_name,
                 profile_img_url,
                 blood_type,
@@ -233,8 +246,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                 stature,
                 weight,
                 objectives,
-                payement_type,
+                payment_type,
                 refered,
+                start_date,
+                end_date,
+                status,
               }),
               headers: {
                 "Content-type": "application/json",
@@ -253,6 +269,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
+
+      //DELETE MEMBER
 
       delete_member: async (id) => {
         const actions = getActions();
@@ -288,11 +306,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({
           id_member: id,
         });
-        console.log(id);
       },
 
       //ADD MEMBERSHIP
-      add_membership: async (type, start_date, end_date) => {
+
+      add_membership: async (type, price, time) => {
         const jwt = localStorage.getItem("token");
         const store = getStore();
         const member_id = store.id_member;
@@ -308,25 +326,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 
               body: JSON.stringify({
                 type,
-                start_date,
-                end_date,
+                price,
+                time,
                 member_id,
               }),
             }
           );
           if (!response.ok) console.log(response);
           const data = await response.json();
-          console.log(data);
         } catch (error) {
           console.log(error);
         }
       },
       //GET MEMBERSHIPS
+
       getAllMemberships: async () => {
         const jwt = localStorage.getItem("token");
         try {
           const response = await fetch(
-            `${process.env.BACKEND_URL}/api/memberships`,
+            `${process.env.BACKEND_URL}api/memberships`,
             {
               method: "GET",
               headers: {
@@ -340,6 +358,92 @@ const getState = ({ getStore, getActions, setStore }) => {
           } else {
             console.log(data.error || "Error al obtener miembros del usuario");
           }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getMemberMemberships: async (id) => {
+        const jwt = localStorage.getItem("token");
+        try {
+          const response = await fetch(
+            `${process.env.BACKEND_URL}/api/${id}/memberships`,
+            {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
+            setStore({ memberships: data.memberships });
+          } else {
+            console.log(data.error || "Error al obtener membresias");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      // EDIT MEMBERSHIP
+      editMembership: async (id, type, price, time, member_id) => {
+        const actions = getActions();
+        const jwt = localStorage.getItem("token");
+
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/edit_membership",
+            {
+              method: "PUT",
+              body: JSON.stringify({
+                id,
+                type,
+                price,
+                time,
+                member_id,
+              }),
+              headers: {
+                "Content-type": "application/json",
+                authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+          const data = await response.json();
+          console.log(data);
+          if (response.ok) {
+            actions.getAllMemberships();
+            return true;
+          }
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+      },
+      //DELETE MEMBERSHIP
+
+      delete_membership: async (id) => {
+        const actions = getActions();
+        const jwt = localStorage.getItem("token");
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/delete_membership",
+            {
+              method: "DELETE",
+              headers: {
+                "Content-type": "application/json",
+                authorization: `Bearer ${jwt}`,
+              },
+              body: JSON.stringify({
+                id,
+              }),
+            }
+          );
+          if (!response.ok) {
+            return false;
+          }
+          const data = await response.json();
+          actions.getAllMemberships();
+          return data;
         } catch (error) {
           console.log(error);
         }

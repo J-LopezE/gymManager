@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Member, Membership, Discipline
+from api.models import db, User, Member, Membership, Discipline, Payments
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -90,6 +90,7 @@ def get_all_users():
 def create_member():
     body= request.json
     user_data = get_jwt_identity()
+    membership_id = body.get("membership_id", None) 
     name = body.get("name", None)
     last_name = body.get("last_name", None)
     profile_img_url = body.get("profile_img_url", None)
@@ -102,13 +103,18 @@ def create_member():
     stature = body.get("stature", None)
     weight = body.get("weight", None)
     objectives = body.get("objectives", None)
-    payement_type = body.get("payement_type", None)
+    payment_type = body.get("payment_type", None)
     refered = body.get("refered", None)
-    if name is None or last_name is None or profile_img_url is None or blood_type is None or gender is None or birthdate is None or address is None or phone is None or emergency_phone is None or stature is None or weight is None or objectives is None or refered is None or payement_type is None:
+    start_date = body.get("start_date", None)
+    end_date = body.get("end_date", None)
+    status = body.get("status", None)
+
+    if name is None or last_name is None or profile_img_url is None or blood_type is None or gender is None or birthdate is None or address is None or phone is None or emergency_phone is None or stature is None or weight is None or objectives is None or refered is None or payment_type is None or start_date is None or end_date is None or status is None or membership_id is None:
         return jsonify({"error": "debe llenar todos los campos"}), 400
     try:
         new_member = Member(
         user_id = user_data["id"],
+        membership_id = membership_id,
         name = name,
         last_name = last_name,
         profile_img_url = profile_img_url,
@@ -121,8 +127,11 @@ def create_member():
         stature = stature,
         weight = weight,
         objectives = objectives,
-        payement_type = payement_type,
-        refered = refered
+        payment_type = payment_type,
+        refered = refered,
+        start_date = start_date,
+        end_date = end_date,
+        status = status
     )
         db.session.add(new_member)
         db.session.commit()
@@ -173,7 +182,8 @@ def edit_member():
         member = Member.query.filter_by(id=member_id, user_id=user_id).first()
         if member is None:
             return jsonify({'error': 'Member no found'}), 404
-                  
+
+        member.membership_id = body.get("membership_id", member.membership_id)       
         member.name = body.get("name", member.name)
         member.last_name = body.get("last_name", member.last_name)
         member.profile_img_url = body.get("profile_img_url", member.profile_img_url)
@@ -186,8 +196,12 @@ def edit_member():
         member.stature = body.get("stature", member.stature)
         member.weight = body.get("weight", member.weight)
         member.objectives = body.get("objectives", member.objectives)
-        member.payement_type = body.get("payement_type", member.payement_type)
+        member.payment_type = body.get("payment_type", member.payment_type)
         member.refered = body.get("refered", member.refered)
+        member.start_date = body.get("start_date", member.start_date)
+        member.end_date = body.get("end_date", member.end_date)
+        member.status = body.get("status", member.status)
+        
         
         db.session.commit()
         
@@ -222,21 +236,16 @@ def create_membership():
     body = request.json
     user_data = get_jwt_identity()
     type = body.get("type", None)
-    start_date = body.get("start_date", None)
-    end_date= body.get("end_date", None)
-    member_id = body.get("member_id", None)
-    member = Member.query.filter_by(id=member_id).first()
-    if member is None:
-        return jsonify({"error": "miembro no encontrado"}), 404
-    if type is None or start_date is None or end_date is None:
+    price = body.get("price", None)
+    time= body.get("time", None)
+    if type is None or price is None or time is None:
         return jsonify({"error": "todos los campos son requeridos"}), 400
     try:
         new_membership = Membership(
             user_id = user_data["id"],
             type = type,
-            start_date = start_date,
-            end_date = end_date,
-            member_id = member_id
+            price = price,
+            time = time,
         )
         db.session.add(new_membership)
         db.session.commit()
@@ -244,6 +253,31 @@ def create_membership():
         return jsonify({"new_membership": new_membership.serialize()}), 201
     except Exception as error:
         db.session.rollback()
+        return jsonify({"error": f"{error}"}), 500
+
+#ENDPOINT PARA EDITAR MEMBRESÍA
+
+@api.route('/edit_membership', methods=['PUT'])
+@jwt_required()
+def edit_membership():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        membership_id = body.get("id")
+        user_id = user_data["id"]
+        
+        if not membership_id or not user_id:
+            return jsonify({'error': 'Missing member ID or user ID'}), 400
+        
+        membership = Membership.query.filter_by(id=membership_id, user_id=user_id).first()
+        if membership is None:
+            return jsonify({'error': 'Membership no found'}), 404
+        membership.type = body.get("type", membership.type)
+        membership.price = body.get("price", membership.price)
+        membership.time= body.get("time", membership.time)
+        db.session.commit()
+        return jsonify({"message": "Membership update successsfully"}), 200
+    except Exception as error:
         return jsonify({"error": f"{error}"}), 500    
 
 #ENDPOINT PARA OBTENER TODAS LAS MEMBRESÍAS
@@ -268,6 +302,25 @@ def get_member_memberships(id):
             return  jsonify({'error': 'miembro no encontrado'}),404
         membership_list = [membership.serialize() for membership in member.memberships]
         return jsonify({"memberships": membership_list}), 200
+    except Exception as error:
+        return jsonify({"error": f"{error}"}), 500
+
+#Endpoint para borrar Member REQUIERE TOKEN
+
+@api.route('/delete_membership', methods=['DELETE'])
+@jwt_required()
+def delete_membership():
+    try:
+        body = request.json
+        user_data = get_jwt_identity()
+        membership_id = body.get("id", None)
+        
+        membership = Membership.query.filter_by(id=membership_id).first()
+        if membership is  None:
+            return jsonify({'error': 'Membership no found'}), 404
+        db.session.delete(membership)
+        db.session.commit()
+        return jsonify({"message": f"Membership removed"}), 200
     except Exception as error:
         return jsonify({"error": f"{error}"}), 500
     

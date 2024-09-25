@@ -13,9 +13,8 @@ export const FormMembership = ({
   const navigate = useNavigate();
   const [membership, setMembership] = useState({
     type: "",
-    start_date: "",
-    end_date: "",
-    member_id: "",
+    price: "",
+    time: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -50,18 +49,17 @@ export const FormMembership = ({
         ? await actions.editMembership(
             id,
             membership.type,
-            membership.start_date,
-            membership.end_date,
-            membership.member_id
+            membership.price,
+            membership.time
           )
         : await actions.add_membership(
             membership.type,
-            membership.start_date,
-            membership.end_date,
-            membership.member_id
+            membership.price,
+            membership.time
           );
-
-      //   actions.getAllMemberships();
+      console.log(id);
+      actions.getAllMemberships();
+      actions.getAllMembers();
       Swal.fire({
         position: "center",
         icon: "success",
@@ -81,8 +79,8 @@ export const FormMembership = ({
       if (!id) {
         setMembership({
           type: "",
-          start_date: "",
-          end_date: "",
+          price: "",
+          time: "",
           member_id: "",
         });
       }
@@ -115,9 +113,8 @@ export const FormMembership = ({
     if (initialMembership) {
       setMembership({
         type: initialMembership.type || "",
-        start_date: initialMembership.start_date || "",
-        end_date: initialMembership.end_date || "",
-        member_id: initialMembership.member_id || "",
+        price: initialMembership.price || "",
+        time: initialMembership.time || "",
       });
     }
   }, [initialMembership, navigate]);
@@ -127,27 +124,24 @@ export const FormMembership = ({
       <form className="form-members-form" onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6 mb-3">
-            <select
-              className="form-members-select"
+            <input
+              type="text"
+              className="form-members-input"
               id="type"
-              name="type"
               value={membership.type}
+              name="type"
+              placeholder="Tipo de Membresía"
               onChange={handleChange}
-              required
-            >
-              <option value="">Selecciona un tipo</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
+            />
           </div>
           <div className="col-md-6 mb-3">
             <input
-              type="date"
+              type="text"
               className="form-members-input"
-              id="start_date"
-              value={membership.start_date}
-              name="start_date"
+              id="price"
+              value={membership.price}
+              name="price"
+              placeholder="Precio"
               onChange={handleChange}
             />
           </div>
@@ -155,11 +149,12 @@ export const FormMembership = ({
         <div className="row">
           <div className="col-md-4 mb-3">
             <input
-              type="date"
+              type="text"
               className="form-members-input"
-              id="end_date"
-              value={membership.end_date}
-              name="end_date"
+              id="time"
+              value={membership.time}
+              name="time"
+              placeholder="Duración (en meses)"
               onChange={handleChange}
             />
           </div>
