@@ -24,11 +24,39 @@ class User(db.Model):
             "rol": self.rol,
             "number": self.number,
         }
-    
+
+
+class Membership(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    type = db.Column(db.String(120), unique=False, nullable=False)
+    price = db.Column(db.Integer, unique=False, nullable=False)
+    time = db.Column(db.String(120), unique=False, nullable=False)
+
+    members = db.relationship('Member', backref='membership_member', lazy=True)
+    disciplines = db.relationship('Discipline', backref='membership_disciplines', lazy=True)
+    payments = db.relationship('Payments',backref='membership_payments', lazy=True )
+
+
+    def __repr__(self):
+        return f'<User {self.type}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "type": self.type,
+            "price": self.price,
+            "time": self.time,
+            "members": [member.serialize() for member in self.members],
+            "disciplines": [discipline.serialize() for discipline in self.disciplines]
+        }
+
 
 class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    membership_id = db.Column(db.Integer, db.ForeignKey('membership.id'), nullable=False)
     name = db.Column(db.String(120), unique=False, nullable=False)
     last_name = db.Column(db.String(120), unique=False, nullable=False)
     profile_img_url = db.Column(db.String(200), unique=False, nullable=False)
@@ -47,12 +75,8 @@ class Member(db.Model):
     end_date = db.Column(db.String(120), unique=False, nullable=False)
     status = db.Column(db.String(120), unique=False, nullable=False)
 
-
-    memberships = db.relationship('Membership', backref='member', lazy=True)
     payments = db.relationship('Payments',backref='membership', lazy=True )
-
-
-    
+   
     def __repr__(self):
         return f'<User {self.id}>'
 
@@ -60,6 +84,7 @@ class Member(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            "membership_id": self.membership_id,
             "name": self.name,
             "last_name": self.last_name,
             "profiel_img_url": self.profile_img_url,
@@ -77,35 +102,10 @@ class Member(db.Model):
             "start_date": self.start_date,
             "end_date": self.end_date,
             "status": self.status,
-            "memberships": [membership.serialize() for membership in self.memberships]
         }
     
 
-class Membership(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    type = db.Column(db.String(120), unique=False, nullable=False)
-    price = db.Column(db.Integer, unique=False, nullable=False)
-    time = db.Column(db.String(120), unique=False, nullable=False)
 
-    member_id = db.Column(db.Integer, db.ForeignKey('member.id'), nullable=False)
-    disciplines = db.relationship('Discipline', backref='membership_disciplines', lazy=True)
-    payments = db.relationship('Payments',backref='membership_payments', lazy=True )
-
-
-    def __repr__(self):
-        return f'<User {self.type}>'
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "type": self.type,
-            "price": self.price,
-            "time": self.time,
-            "member_id": self.member_id,
-            "disciplines": [discipline.serialize() for discipline in self.disciplines]
-        }
     
 class Discipline(db.Model):
     id = db.Column(db.Integer, primary_key=True)

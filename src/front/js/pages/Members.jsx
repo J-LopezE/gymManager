@@ -9,7 +9,6 @@ import "../../styles/tables.css";
 import Table from "react-bootstrap/Table";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
-import { CreateMemberships } from "../component/CreateMembership.jsx";
 
 export const Members = () => {
   const homeBackgroundStyle = {
@@ -93,10 +92,7 @@ export const Members = () => {
       navigate("/login");
     }
     const userId = getTokenInfo();
-
-    if (userId) {
-      actions.getAllMembers();
-    }
+    actions.getAllMembers();
   }, []);
   return (
     <div
@@ -115,7 +111,6 @@ export const Members = () => {
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
-                <th>Membresía</th>
                 <th>Estado</th>
                 <th colSpan={2}>Acciones</th>
               </tr>
@@ -126,13 +121,6 @@ export const Members = () => {
                   <td>{member.id}</td>
                   <td>{member.name}</td>
                   <td>{member.last_name}</td>
-                  <td>
-                    {member.memberships.length ? (
-                      member.memberships.map((suscription) => suscription.type)
-                    ) : (
-                      <CreateMemberships member={member} />
-                    )}
-                  </td>
                   <td>{member.status}</td>
                   <td>
                     <button

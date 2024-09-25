@@ -15,7 +15,6 @@ export const FormMembership = ({
     type: "",
     price: "",
     time: "",
-    member_id: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -51,14 +50,12 @@ export const FormMembership = ({
             id,
             membership.type,
             membership.price,
-            membership.time,
-            membership.member_id
+            membership.time
           )
         : await actions.add_membership(
             membership.type,
             membership.price,
-            membership.time,
-            membership.member_id
+            membership.time
           );
       console.log(id);
       actions.getAllMemberships();
@@ -118,7 +115,6 @@ export const FormMembership = ({
         type: initialMembership.type || "",
         price: initialMembership.price || "",
         time: initialMembership.time || "",
-        member_id: initialMembership.member_id || "",
       });
     }
   }, [initialMembership, navigate]);
@@ -128,19 +124,15 @@ export const FormMembership = ({
       <form className="form-members-form" onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6 mb-3">
-            <select
-              className="form-members-select"
+            <input
+              type="text"
+              className="form-members-input"
               id="type"
-              name="type"
               value={membership.type}
+              name="type"
+              placeholder="Tipo de Membresía"
               onChange={handleChange}
-              required
-            >
-              <option value="">Selecciona una Membesía</option>
-              <option value="Basica">Basica</option>
-              <option value="Estandar">Estandar</option>
-              <option value="Premium">Premium</option>
-            </select>
+            />
           </div>
           <div className="col-md-6 mb-3">
             <input
@@ -149,6 +141,7 @@ export const FormMembership = ({
               id="price"
               value={membership.price}
               name="price"
+              placeholder="Precio"
               onChange={handleChange}
             />
           </div>
@@ -161,6 +154,7 @@ export const FormMembership = ({
               id="time"
               value={membership.time}
               name="time"
+              placeholder="Duración (en meses)"
               onChange={handleChange}
             />
           </div>
