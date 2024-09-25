@@ -90,6 +90,7 @@ def get_all_users():
 def create_member():
     body= request.json
     user_data = get_jwt_identity()
+    membership_id = body.get("membership_id", None) 
     name = body.get("name", None)
     last_name = body.get("last_name", None)
     profile_img_url = body.get("profile_img_url", None)
@@ -108,11 +109,12 @@ def create_member():
     end_date = body.get("end_date", None)
     status = body.get("status", None)
 
-    if name is None or last_name is None or profile_img_url is None or blood_type is None or gender is None or birthdate is None or address is None or phone is None or emergency_phone is None or stature is None or weight is None or objectives is None or refered is None or payment_type is None or start_date is None or end_date is None or status is None:
+    if name is None or last_name is None or profile_img_url is None or blood_type is None or gender is None or birthdate is None or address is None or phone is None or emergency_phone is None or stature is None or weight is None or objectives is None or refered is None or payment_type is None or start_date is None or end_date is None or status is None or membership_id is None:
         return jsonify({"error": "debe llenar todos los campos"}), 400
     try:
         new_member = Member(
         user_id = user_data["id"],
+        membership_id = membership_id,
         name = name,
         last_name = last_name,
         profile_img_url = profile_img_url,
@@ -180,7 +182,8 @@ def edit_member():
         member = Member.query.filter_by(id=member_id, user_id=user_id).first()
         if member is None:
             return jsonify({'error': 'Member no found'}), 404
-                  
+
+        member.membership_id = body.get("membership_id", member.membership_id)       
         member.name = body.get("name", member.name)
         member.last_name = body.get("last_name", member.last_name)
         member.profile_img_url = body.get("profile_img_url", member.profile_img_url)
@@ -235,10 +238,6 @@ def create_membership():
     type = body.get("type", None)
     price = body.get("price", None)
     time= body.get("time", None)
-    member_id = body.get("member_id", None)
-    member = Member.query.filter_by(id=member_id).first()
-    if member is None:
-        return jsonify({"error": "miembro no encontrado"}), 404
     if type is None or price is None or time is None:
         return jsonify({"error": "todos los campos son requeridos"}), 400
     try:
@@ -247,7 +246,6 @@ def create_membership():
             type = type,
             price = price,
             time = time,
-            member_id = member_id
         )
         db.session.add(new_membership)
         db.session.commit()
@@ -277,7 +275,6 @@ def edit_membership():
         membership.type = body.get("type", membership.type)
         membership.price = body.get("price", membership.price)
         membership.time= body.get("time", membership.time)
-        membership.member_id = body.get("member_id", membership.member_id)
         db.session.commit()
         return jsonify({"message": "Membership update successsfully"}), 200
     except Exception as error:

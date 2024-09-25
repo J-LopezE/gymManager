@@ -9,6 +9,7 @@ import Table from "react-bootstrap/Table";
 import "../../styles/tables.css";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
+import { CreateMemberships } from "../component/CreateMembership.jsx";
 
 export const Membership = () => {
   const homeBackgroundStyle = {
@@ -75,11 +76,7 @@ export const Membership = () => {
     if (!jwt) {
       navigate("/login");
     }
-    const userId = getTokenInfo();
-
-    if (userId) {
-      actions.getAllMemberships();
-    }
+    actions.getAllMemberships();
   }, []);
 
   return (
@@ -89,6 +86,9 @@ export const Membership = () => {
     >
       <div className="members-container">
         <div className="table-container mx-auto">
+          <div className="create-members-container d-flex float-end">
+            <CreateMemberships />
+          </div>
           <div className="create-members-container d-flex float-end"></div>
 
           <Table striped bordered hover variant="dark" className="table">

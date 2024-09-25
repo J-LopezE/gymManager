@@ -11,6 +11,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
   const [profile_img_url, setProfile_img_url] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [member, setMember] = useState({
+    membership_id: "",
     name: "",
     last_name: "",
     blood_type: "",
@@ -72,6 +73,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
       const response = id
         ? await actions.editMember(
             id,
+            member.membership_id,
             member.name,
             member.last_name,
             result,
@@ -91,6 +93,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             member.status
           )
         : await actions.add_member(
+            member.membership_id,
             member.name,
             member.last_name,
             result,
@@ -129,6 +132,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
       }).then(() => {});
       if (!id) {
         setMember({
+          membership_id: "",
           name: "",
           last_name: "",
           blood_type: "",
@@ -171,8 +175,10 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
       navigate("/login");
       return;
     }
+    actions.getAllMemberships();
     if (initialMember) {
       setMember({
+        membership_id: initialMember.membership_id || "",
         name: initialMember.name || "",
         last_name: initialMember.last_name || "",
         blood_type: initialMember.blood_type || "",
@@ -373,6 +379,21 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               onChange={handleChange}
             />
           </div>
+          <select
+            className="form-members-select"
+            id="membership_id"
+            name="membership_id"
+            value={member.membership_id}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Selecciona una membresía</option>
+            {store.memberships.map((membership) => (
+              <option key={membership.id} value={membership.id}>
+                {membership.type}
+              </option>
+            ))}
+          </select>
           <select
             className="form-members-select"
             id="status"

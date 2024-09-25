@@ -89,6 +89,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       //ADD MEMBER
       add_member: async (
+        membership_id,
         name,
         last_name,
         profile_img_url,
@@ -120,6 +121,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 authorization: `Bearer ${jwt}`,
               },
               body: JSON.stringify({
+                membership_id,
                 name,
                 last_name,
                 profile_img_url,
@@ -202,6 +204,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       // EDIT MEMBER
       editMember: async (
         id,
+        membership_id,
         name,
         last_name,
         profile_img_url,
@@ -231,6 +234,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               body: JSON.stringify({
                 id,
                 name,
+                membership_id,
                 last_name,
                 profile_img_url,
                 blood_type,
@@ -330,7 +334,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (!response.ok) console.log(response);
           const data = await response.json();
-          console.log(data);
         } catch (error) {
           console.log(error);
         }
@@ -341,7 +344,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const jwt = localStorage.getItem("token");
         try {
           const response = await fetch(
-            `${process.env.BACKEND_URL}/api/memberships`,
+            `${process.env.BACKEND_URL}api/memberships`,
             {
               method: "GET",
               headers: {
@@ -352,7 +355,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           if (response.ok) {
             setStore({ memberships: data.memberships });
-            console.log(data.memberships);
           } else {
             console.log(data.error || "Error al obtener miembros del usuario");
           }
