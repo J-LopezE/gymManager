@@ -4,6 +4,9 @@ import "../../styles/Dashboard.css";
 import { Context } from "../store/appContext";
 import Gym from "../../img/gym.png"; // Import the image
 
+import { Chart as ChartJS } from "chart.js/auto";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
+
 const Dashboard = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const Dashboard = () => {
     backgroundImage: `url(${Gym})`, // Corregido con backticks
     backgroundSize: "cover",
     backgroundPosition: "center",
-    height: "100vh",
+    height: "100%",
     width: "100%",
   };
 
@@ -22,6 +25,7 @@ const Dashboard = () => {
       navigate("/login");
       return;
     }
+    actions.getMe();
     actions.getAllMembers();
     actions.getAllMemberships();
   }, []);
@@ -29,14 +33,31 @@ const Dashboard = () => {
   // Filtra miembros activos
   const getActiveMembers = () => {
     return store.members
-      ? store.members.filter((member) => member.status === "activo")
+      ? store.members.filter((member) => member.status === "Activa")
       : [];
   };
 
-  // Filtra miembros inactivos
+  // Filtra miembros suspendidos
+  const getSuspendedMembers = () => {
+    return store.members
+      ? store.members.filter((member) => member.status === "Suspendida")
+      : [];
+  };
+
+  // Filtra miembros finalizados
+  const getFinalizedMembers = () => {
+    return store.members
+      ? store.members.filter((member) => member.status === "Finalizada")
+      : [];
+  };
+
+  // Filtra miembros Inactivos
   const getInactiveMembers = () => {
     return store.members
-      ? store.members.filter((member) => member.status === "inactivo")
+      ? store.members.filter(
+          (member) =>
+            member.status === "Finalizada" || member.status === "Suspendida"
+        )
       : [];
   };
 
@@ -44,6 +65,56 @@ const Dashboard = () => {
     <div style={homeBackgroundStyle} className="text-center">
       <div className="dashboard">
         <div className="container">
+          <div className="container">
+            <div className="row container-graficas m-3 p-3">
+              <div className="col col-md-4 container m-auto">
+                <h1 className="text-white">Miembros</h1>
+                <Doughnut
+                  data={{
+                    labels: store.memberships.map(
+                      (membership) => membership.type
+                    ),
+                    datasets: [
+                      {
+                        //label: "Membresías",
+                        data: store.memberships.map(
+                          (membership) => membership.members.length
+                        ),
+                        backgroundColor: [
+                          "rgba(43,63,229,0.8)",
+                          "rgba(250,192,19,0.8)",
+                          "rgba(253,135,135,0.8)",
+                        ],
+                      },
+                    ],
+                  }}
+                />
+              </div>
+              <div className="col col-md-4 container m-auto">
+                <h1 className="text-white">Estado</h1>
+                <Doughnut
+                  data={{
+                    labels: ["Activa", "Suspendida", "Finalizada"],
+                    datasets: [
+                      {
+                        //label: "Membresía",
+                        data: [
+                          getActiveMembers().length,
+                          getSuspendedMembers().length,
+                          getFinalizedMembers().length,
+                        ],
+                        backgroundColor: [
+                          "rgba(43,63,229,0.8)",
+                          "rgba(250,192,19,0.8)",
+                          "rgba(253,135,135,0.8)",
+                        ],
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            </div>
+          </div>
           {/* Tabla de Miembros Activos */}
           <div className="mb-4 mt-5">
             <h5 className="text-white">Miembros Activos</h5>

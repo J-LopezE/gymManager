@@ -39,15 +39,6 @@ const SideBar = () => {
           <li className="mb-4">
             <button
               className="sidebar-button"
-              onClick={() => navigate("/subscription")}
-            >
-              <i className="fas fa-clipboard-list"></i>
-              <span className="sidebar-tooltip">Subscripción</span>
-            </button>
-          </li>
-          <li className="mb-4">
-            <button
-              className="sidebar-button"
               onClick={() => navigate("/membership")}
             >
               <i className="fas fa-clipboard-list"></i>

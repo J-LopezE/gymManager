@@ -2,6 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       userMembers: [],
+      users: [],
       members: [],
       id_member: [],
       memberships: [],
@@ -63,7 +64,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
-      //GET ME//
+
+      //GET ME
       getMe: async () => {
         const jwt = localStorage.getItem("token");
 
@@ -77,6 +79,27 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           if (response.ok) {
             setStore({ me: data });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      //GET ALL USERS//
+      getUsers: async () => {
+        const jwt = localStorage.getItem("token");
+
+        try {
+          const response = await fetch(process.env.BACKEND_URL + "/api/users", {
+            method: "GET",
+            headers: {
+              authorization: `Bearer ${jwt}`,
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            console.log(data);
+            setStore({ users: data });
           }
         } catch (error) {
           console.log(error);
@@ -354,6 +377,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (response.ok) {
+            console.log(data);
+
             setStore({ memberships: data.memberships });
           } else {
             console.log(data.error || "Error al obtener miembros del usuario");

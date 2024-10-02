@@ -77,6 +77,7 @@ export const Membership = () => {
     if (!jwt) {
       navigate("/login");
     }
+    actions.getMe();
   }, []);
 
   return (

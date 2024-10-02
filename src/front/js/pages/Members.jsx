@@ -91,6 +91,7 @@ export const Members = () => {
     if (!jwt) {
       navigate("/login");
     }
+    actions.getMe();
   }, []);
   return (
     <div
@@ -103,7 +104,12 @@ export const Members = () => {
             <CreateMembers />
           </div>
           {store.memberships.map((membership) => (
-            <>
+            <div key={membership.id}>
+              {membership.members.length > 0 ? (
+                <h4 className="text-white">{membership.type}</h4>
+              ) : (
+                <p className="d-none"></p>
+              )}
               {membership.members.length > 0 ? (
                 <Table
                   striped
@@ -118,7 +124,6 @@ export const Members = () => {
                       <th>#</th>
                       <th>Nombre</th>
                       <th>Apellido</th>
-                      <th>Membresía</th>
                       <th>Estado</th>
                       <th colSpan={2}>Acciones</th>
                     </tr>
@@ -129,7 +134,6 @@ export const Members = () => {
                         <td>{member.id}</td>
                         <td>{member.name}</td>
                         <td>{member.last_name}</td>
-                        <td>{membership.type}</td>
                         <td>{member.status}</td>
                         <td>
                           <button
@@ -148,7 +152,7 @@ export const Members = () => {
               ) : (
                 <p className="d-none"></p>
               )}
-            </>
+            </div>
           ))}
         </div>
       </div>

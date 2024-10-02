@@ -1,3 +1,8 @@
+#acquisitions {
+  width: 700px;
+  height: 700px;
+}
+
 .dashboard {
   margin-left: 200px;
   padding: 40px;
@@ -44,4 +49,10 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
+}
+
+.container-graficas {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

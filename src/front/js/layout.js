@@ -6,7 +6,7 @@ import { BackendURL } from "./component/backendURL";
 import Dashboard from "./pages/Dashboard.jsx";
 import { Membership } from "./pages/Membership.jsx";
 import { Members } from "./pages/Members.jsx";
-import { User } from "./pages/User.jsx";
+import { Users } from "./pages/User.jsx";
 
 import injectContext from "./store/appContext";
 import SideBar from "./component/SideBar.jsx";
@@ -29,7 +29,7 @@ const Layout = () => {
 
             <Route element={<Members />} path="/members" />
             <Route element={<Membership />} path="/membership" />
-            <Route element={<User />} path="/users" />
+            <Route element={<Users />} path="/users" />
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
             <Route element={<h1>Not found!</h1>} />

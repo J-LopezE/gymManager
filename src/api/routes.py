@@ -72,15 +72,7 @@ def get_all_users():
     users = User.query.all()
     if not users:
         return jsonify({"error": "Users not found"}), 404
-    users_data = [
-        {
-            "id": user.id,
-            "username": user.username,
-            "profile_picture_url": user.profile_picture_url,
-            "rol": user.rol,
-            "number": user.number
-        } for user in users
-    ]
+    users_data = [ user.serialize() for user in users]
     return jsonify(users_data), 200
 
 #ENDPOINT PARA CREAR MIEMBROS (QUIEN CONCURRE AL GYM)
