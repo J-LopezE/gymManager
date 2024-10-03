@@ -21,6 +21,7 @@ export const Members = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   useTokenExpiration();
+
   const getTokenInfo = () => {
     const token = localStorage.getItem("token");
     if (!token) return null;
@@ -33,22 +34,19 @@ export const Members = () => {
     }
   };
 
-  const getMembershipStatus = (startDate, endDate) => {
-    const today = new Date();
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+  // Función para verificar si la membresía está activa
+  const isMembershipActive = (endDate) => {
+    const currentDate = new Date();
+    const memberEndDate = new Date(endDate);
+    return memberEndDate > currentDate; // Devuelve true si la membresía está activa
+  };
 
-    end.setHours(23, 59, 59, 999);
-
-    console.log(today);
-    console.log(start);
-    console.log(end);
-
-    if (today >= start && today <= end) {
-      return "Activo";
-    } else {
-      return "Inactivo";
-    }
+  // Función para obtener los días restantes
+  const getRemainingDays = (endDate) => {
+    const currentDate = new Date();
+    const memberEndDate = new Date(endDate);
+    const timeDifference = memberEndDate - currentDate;
+    return Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Devuelve los días restantes
   };
 
   const deleteMember = (id) => {
@@ -93,6 +91,7 @@ export const Members = () => {
     }
     actions.getMe();
   }, []);
+
   return (
     <div
       style={homeBackgroundStyle}
@@ -129,24 +128,35 @@ export const Members = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {membership.members.map((member) => (
-                      <tr key={member.id}>
-                        <td>{member.id}</td>
-                        <td>{member.name}</td>
-                        <td>{member.last_name}</td>
-                        <td>{member.status}</td>
-                        <td>
-                          <button
-                            type="button"
-                            onClick={(e) => deleteMember(member.id)}
-                            className="btn btn-danger me-5"
-                          >
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                          <EditMembers member={member} />
-                        </td>
-                      </tr>
-                    ))}
+                    {membership.members.map((member) => {
+                      // Obtener el estado de la membresía
+                      const isActive = isMembershipActive(member.end_date);
+                      const daysRemaining = getRemainingDays(member.end_date);
+
+                      return (
+                        <tr key={member.id}>
+                          <td>{member.id}</td>
+                          <td>{member.name}</td>
+                          <td>{member.last_name}</td>
+                          <td>
+                            {isActive ? "Activa" : "Vencida"}
+                            {isActive && daysRemaining <= 5 && (
+                              <span> (quedan {daysRemaining} días)</span>
+                            )}
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              onClick={(e) => deleteMember(member.id)}
+                              className="btn btn-danger me-5"
+                            >
+                              <i className="fa-solid fa-trash"></i>
+                            </button>
+                            <EditMembers member={member} />
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </Table>
               ) : (

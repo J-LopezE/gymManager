@@ -64,7 +64,7 @@ export const Login = () => {
     <div style={homeBackgroundStyle} className="text-center">
       <div className="container login-home">
         <div className="row justify-content-center">
-          <div className="col-12">
+          <div className="col col-md-12">
             <div className="formulario-login p-4">
               <form onSubmit={handleSubmitLogin}>
                 <div className="form form-grup">

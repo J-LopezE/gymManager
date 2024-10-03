@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 import Gym from "../../img/gym.png"; // Import the image
-import { CreateMembers } from "../component/CreateMembers.jsx";
-import { EditMembers } from "../component/EditMembers.jsx";
 import "../../styles/tables.css";
 import Table from "react-bootstrap/Table";
 import { jwtDecode } from "jwt-decode";
@@ -102,7 +100,13 @@ export const Users = () => {
       <div className="members-container">
         <div className="table-container mx-auto">
           <div className="create-members-container d-flex float-end">
-            <CreateMembers />
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => navigate("/register")}
+            >
+              <i className="fa-solid fa-plus text-white"></i>
+            </button>
           </div>
           <Table striped bordered hover variant="dark" className="table">
             <thead>

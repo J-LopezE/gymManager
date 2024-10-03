@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/Dashboard.css";
 import { Context } from "../store/appContext";
 import Gym from "../../img/gym.png"; // Import the image
+import useTokenExpiration from "../../../hooks/useTokenExpiration.jsx";
 
 import { Chart as ChartJS } from "chart.js/auto";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
@@ -10,6 +11,7 @@ import { Bar, Doughnut, Line } from "react-chartjs-2";
 const Dashboard = () => {
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
+  useTokenExpiration();
 
   const homeBackgroundStyle = {
     backgroundImage: `url(${Gym})`, // Corregido con backticks
@@ -30,124 +32,118 @@ const Dashboard = () => {
     actions.getAllMemberships();
   }, []);
 
-  // Filtra miembros activos
+  const isMembershipActive = (endDate) => {
+    const currentDate = new Date();
+    const memberEndDate = new Date(endDate);
+    return memberEndDate > currentDate; // Devuelve true si la membresía está activa
+  };
+
   const getActiveMembers = () => {
     return store.members
-      ? store.members.filter((member) => member.status === "Activa")
+      ? store.members.filter((member) => isMembershipActive(member.end_date))
       : [];
   };
 
-  // Filtra miembros suspendidos
-  const getSuspendedMembers = () => {
+  const getExpiredMembers = () => {
     return store.members
-      ? store.members.filter((member) => member.status === "Suspendida")
+      ? store.members.filter((member) => !isMembershipActive(member.end_date))
       : [];
   };
 
-  // Filtra miembros finalizados
-  const getFinalizedMembers = () => {
-    return store.members
-      ? store.members.filter((member) => member.status === "Finalizada")
-      : [];
-  };
-
-  // Filtra miembros Inactivos
-  const getInactiveMembers = () => {
-    return store.members
-      ? store.members.filter(
-          (member) =>
-            member.status === "Finalizada" || member.status === "Suspendida"
-        )
-      : [];
+  const getRemainingDays = (endDate) => {
+    const currentDate = new Date();
+    const memberEndDate = new Date(endDate);
+    const timeDifference = memberEndDate - currentDate;
+    return Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   };
 
   return (
     <div style={homeBackgroundStyle} className="text-center">
       <div className="dashboard">
         <div className="container">
-          <div className="container">
-            <div className="row container-graficas m-3 p-3">
-              <div className="col col-md-4 container m-auto">
-                <h1 className="text-white">Miembros</h1>
-                <Doughnut
-                  data={{
-                    labels: store.memberships.map(
-                      (membership) => membership.type
-                    ),
-                    datasets: [
-                      {
-                        //label: "Membresías",
-                        data: store.memberships.map(
-                          (membership) => membership.members.length
-                        ),
-                        backgroundColor: [
-                          "rgba(43,63,229,0.8)",
-                          "rgba(250,192,19,0.8)",
-                          "rgba(253,135,135,0.8)",
-                        ],
-                      },
-                    ],
-                  }}
-                />
-              </div>
-              <div className="col col-md-4 container m-auto">
-                <h1 className="text-white">Estado</h1>
-                <Doughnut
-                  data={{
-                    labels: ["Activa", "Suspendida", "Finalizada"],
-                    datasets: [
-                      {
-                        //label: "Membresía",
-                        data: [
-                          getActiveMembers().length,
-                          getSuspendedMembers().length,
-                          getFinalizedMembers().length,
-                        ],
-                        backgroundColor: [
-                          "rgba(43,63,229,0.8)",
-                          "rgba(250,192,19,0.8)",
-                          "rgba(253,135,135,0.8)",
-                        ],
-                      },
-                    ],
-                  }}
-                />
-              </div>
+          <div className="row container-graficas m-3 p-3">
+            <div className="col col-md-4 container m-auto">
+              <h1 className="text-white">Miembros</h1>
+              <Doughnut
+                data={{
+                  labels: store.memberships.map(
+                    (membership) => membership.type
+                  ),
+                  datasets: [
+                    {
+                      data: store.memberships.map(
+                        (membership) => membership.members.length
+                      ),
+                      backgroundColor: [
+                        "rgba(43,63,229,0.8)",
+                        "rgba(250,192,19,0.8)",
+                        "rgba(253,135,135,0.8)",
+                      ],
+                    },
+                  ],
+                }}
+              />
+            </div>
+            <div className="col col-md-4 container m-auto">
+              <h1 className="text-white">Estado</h1>
+              <Doughnut
+                data={{
+                  labels: ["Activa", "Vencida"],
+                  datasets: [
+                    {
+                      data: [
+                        getActiveMembers().length,
+                        getExpiredMembers().length,
+                      ],
+                      backgroundColor: [
+                        "rgba(43,63,229,0.8)",
+                        "rgba(253,135,135,0.8)",
+                      ],
+                    },
+                  ],
+                }}
+              />
             </div>
           </div>
+
           {/* Tabla de Miembros Activos */}
           <div className="mb-4 mt-5">
-            <h5 className="text-white">Miembros Activos</h5>
+            <h5 className="text-white">Membresías Activas</h5>
             <div className="table-container-dashboard">
               <table className="table table-dark table-striped">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Miembros</th>
+                    <th scope="col">Nombres y Apellidos</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col">Inicio</th>
+                    <th scope="col">Fin</th>
                   </tr>
                 </thead>
                 <tbody>
                   {getActiveMembers().length > 0 ? (
-                    getActiveMembers().map((member, index) => (
-                      <tr key={member.id}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{member.name}</td>
-                        <td>{member.status}</td>
-                        <td>
-                          <button className="btn btn-danger btn-sm mx-1">
-                            <i className="fas fa-trash-alt"></i>
-                          </button>
-                          <button className="btn btn-primary btn-sm mx-1">
-                            <i className="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    ))
+                    getActiveMembers().map((member, index) => {
+                      const daysRemaining = getRemainingDays(member.end_date);
+                      return (
+                        <tr key={`${member.id}-${index}`}>
+                          <th scope="row">{index + 1}</th>
+                          <td>
+                            {member.name} {member.last_name}
+                          </td>
+                          <td>Activa</td>
+                          <td>{member.start_date}</td>
+                          <td>
+                            {member.end_date}
+                            {daysRemaining <= 5 && daysRemaining > 0 && (
+                              <span> (quedan {daysRemaining} días)</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
                   ) : (
                     <tr>
-                      <td colSpan="4">No hay miembros activos.</td>
+                      <td colSpan="5">No hay membresías activas.</td>
                     </tr>
                   )}
                 </tbody>
@@ -155,39 +151,46 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Tabla de Miembros Inactivos */}
+          {/* Tabla de membresías Vencidos */}
           <div className="mb-4 mt-5">
-            <h5 className="text-white">Miembros Inactivos</h5>
+            <h5 className="text-white">Membresías Vencidas</h5>
             <div className="table-container-dashboard">
               <table className="table table-dark table-striped">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Miembros</th>
+                    <th scope="col">Nombres y Apellidos</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col">Inicio</th>
+                    <th scope="col">Fin</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {getInactiveMembers().length > 0 ? (
-                    getInactiveMembers().map((member, index) => (
-                      <tr key={member.id}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{member.name}</td>
-                        <td>{member.status}</td>
-                        <td>
-                          <button className="btn btn-danger btn-sm mx-1">
-                            <i className="fas fa-trash-alt"></i>
-                          </button>
-                          <button className="btn btn-primary btn-sm mx-1">
-                            <i className="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    ))
+                  {getExpiredMembers().length > 0 ? (
+                    getExpiredMembers().map((member, index) => {
+                      return (
+                        <tr key={`${member.id}-${index}`}>
+                          <th scope="row">{index + 1}</th>
+                          <td>
+                            {member.name} {member.last_name}
+                          </td>
+                          <td className="text-muted">Vencida</td>
+                          <td>{member.start_date}</td>
+                          <td
+                            className={
+                              new Date(member.end_date) > new Date()
+                                ? ""
+                                : "text-danger"
+                            }
+                          >
+                            {member.end_date}
+                          </td>
+                        </tr>
+                      );
+                    })
                   ) : (
                     <tr>
-                      <td colSpan="4">No hay miembros inactivos.</td>
+                      <td colSpan="5">No hay membresías vencidas.</td>
                     </tr>
                   )}
                 </tbody>
@@ -197,36 +200,46 @@ const Dashboard = () => {
 
           {/* Tabla General */}
           <div className="table-container-dashboard">
-            <h5 className="text-white">Todos los Miembros</h5>
+            <h5 className="text-white">Todas las Membresías</h5>
             <table className="table table-dark table-striped">
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Miembros</th>
+                  <th scope="col">Nombres y Apellidos</th>
                   <th scope="col">Estado</th>
-                  <th scope="col">Acciones</th>
+                  <th scope="col">Inicio</th>
+                  <th scope="col">Fin</th>
                 </tr>
               </thead>
               <tbody>
                 {store.members && store.members.length > 0 ? (
-                  store.members.map((member, index) => (
-                    <tr key={member.id}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{member.name}</td>
-                      <td>{member.status}</td>
-                      <td>
-                        <button className="btn btn-danger btn-sm mx-1">
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
-                        <button className="btn btn-primary btn-sm mx-1">
-                          <i className="fas fa-edit"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  ))
+                  store.members.map((member, index) => {
+                    const isActive = isMembershipActive(member.end_date);
+                    return (
+                      <tr key={`${member.id}-${index}`}>
+                        <th scope="row">{index + 1}</th>
+                        <td>
+                          {member.name} {member.last_name}
+                        </td>
+                        <td className={isActive ? "" : "text-muted"}>
+                          {isActive ? "Activa" : "Vencida"}
+                        </td>
+                        <td>{member.start_date}</td>
+                        <td
+                          className={
+                            new Date(member.end_date) > new Date()
+                              ? ""
+                              : "text-danger"
+                          }
+                        >
+                          {member.end_date}
+                        </td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
-                    <td colSpan="4">No hay membresías próximas a vencer.</td>
+                    <td colSpan="5">No hay membresías.</td>
                   </tr>
                 )}
               </tbody>

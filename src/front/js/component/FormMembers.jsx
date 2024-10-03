@@ -31,6 +31,8 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
   });
   const [loading, setLoading] = useState(false);
 
+  const today = new Date().toISOString().split("T")[0];
+
   function handleChange(e) {
     setMember({ ...member, [e.target.name]: e.target.value });
   }
@@ -127,7 +129,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
         },
         background: "rgba(0, 0, 0, 0.7)",
         color: "#fff",
-      }).then(() => {});
+      });
       if (!id) {
         setMember({
           membership_id: "",
@@ -203,6 +205,26 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
       <form className="form-members-form" onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6 mb-3">
+            <select
+              className="form-members-input"
+              id="membership_id"
+              name="membership_id"
+              value={member.membership_id}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>
+                Seleccionar Membresía
+              </option>
+              {store.memberships &&
+                store.memberships.map((membership) => (
+                  <option key={membership.id} value={membership.id}>
+                    {membership.type}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className="col-md-6 mb-3">
             <input
               type="text"
               className="form-members-input"
@@ -214,6 +236,8 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               required
             />
           </div>
+        </div>
+        <div className="row">
           <div className="col-md-6 mb-3">
             <input
               type="text"
@@ -226,9 +250,10 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               required
             />
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-4 mb-3">
+          <div className="col-md-6 mb-3">
+            <span className="form-members-label text-white">
+              Fecha de Nacimiento
+            </span>
             <input
               type="date"
               className="form-members-input"
@@ -238,6 +263,8 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               onChange={handleChange}
             />
           </div>
+        </div>
+        <div className="row">
           <div className="col-md-4 mb-3">
             <input
               type="tel"
@@ -262,7 +289,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               required
             />
           </div>
-          <div className="col-md-12 mb-6">
+          <div className="col-md-4 mb-3">
             <input
               type="text"
               className="form-members-input"
@@ -297,6 +324,7 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               value={member.weight}
               name="weight"
               onChange={handleChange}
+              required
             />
           </div>
           <div className="col-md-4 mb-3">
@@ -311,7 +339,18 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
             />
           </div>
         </div>
-        <div className="row mt-2">
+        <div className="row mt-3">
+          <div className="col-md-6 mb-3">
+            <input
+              type="text"
+              className="form-members-input"
+              id="objectives"
+              placeholder="Objetivos"
+              value={member.objectives}
+              name="objectives"
+              onChange={handleChange}
+            />
+          </div>
           <div className="col-md-6 mb-3">
             <select
               className="form-members-select"
@@ -319,124 +358,105 @@ export const FormMembers = ({ id, btnMember, member: initialMember }) => {
               name="gender"
               value={member.gender}
               onChange={handleChange}
-              required
             >
-              <option value="">Selecciona un Género</option>
-              <option value="female">Femenino</option>
-              <option value="male">Masculino</option>
-              <option value="other">Otro</option>
-            </select>
-          </div>
-          <div className="col-md-6 mb-3">
-            <select
-              className="form-members-select"
-              id="payment_type"
-              name="payment_type"
-              value={member.payment_type}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Selecciona un Método de Pago</option>
-              <option value="cash">Efectivo</option>
-              <option value="creditCard">Tarjeta de Crédito</option>
-              <option value="debitCard">Tarjeta de Débito</option>
-              <option value="bankTransfer">Transferencia Bancaria</option>
+              <option value="">Seleccionar Género</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
             </select>
           </div>
         </div>
         <div className="row mt-3">
           <div className="col-md-6 mb-3">
-            <textarea
-              className="form-members-textarea"
-              id="objectives"
-              rows="3"
-              placeholder="Objetivos"
-              value={member.objectives}
-              name="objectives"
+            <input
+              type="text"
+              className="form-members-select"
+              id="payment_type"
+              placeholder="Tipo de Pago"
+              value={member.payment_type}
+              name="payment_type"
               onChange={handleChange}
-              required
-            ></textarea>
+            />
           </div>
-          <div className="col-md-4 mb-3">
+          <div className="col-md-6 mb-3">
+            <input
+              type="text"
+              className="form-members-input"
+              id="refered"
+              placeholder="Referido por"
+              value={member.refered}
+              name="refered"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className="row mt-3">
+          <div className="col-md-6 mb-3">
+            <span className="form-members-label text-white">
+              Fecha de Inicio
+            </span>
             <input
               type="date"
               className="form-members-input"
               id="start_date"
+              placeholder="Fecha de Inicio"
               value={member.start_date}
               name="start_date"
               onChange={handleChange}
+              required
+              min={today}
             />
           </div>
-          <div className="col-md-4 mb-3">
+          <div className="col-md-6 mb-3">
+            <span className="form-members-label text-white">Fecha de Fin</span>
             <input
               type="date"
               className="form-members-input"
               id="end_date"
+              placeholder="Fecha de Fin"
               value={member.end_date}
               name="end_date"
               onChange={handleChange}
+              required
+              min={today}
             />
           </div>
-          <select
-            className="form-members-select"
-            id="membership_id"
-            name="membership_id"
-            value={member.membership_id}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Selecciona una membresía</option>
-            {store.memberships.map((membership) => (
-              <option key={membership.id} value={membership.id}>
-                {membership.type}
-              </option>
-            ))}
-          </select>
-          <select
-            className="form-members-select"
-            id="status"
-            name="status"
-            value={member.status}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Selecciona el estado de la membresía</option>
-            <option value="Activa">Activa</option>
-            <option value="Suspendida">Suspendida</option>
-            <option value="Finalizada">Finalizada</option>
-          </select>
-          <div className="col-md-6 mb-2">
-            <div className="d-flex flex-column">
-              <input
-                type="text"
-                className="form-members-input"
-                id="refered"
-                placeholder="Nombre del Referido"
-                value={member.refered}
-                name="refered"
-                onChange={handleChange}
-              />
-              <input
-                id="profile_img_url"
-                type="file"
-                className="form-members-file mb-2"
-                onChange={handleFileChange}
-              />
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Vista previa"
-                  className="image-preview"
-                />
-              )}
-            </div>
+        </div>
+        <div className="row mt-3">
+          <div className="col-md-6 mb-3">
+            <select
+              className="form-members-input"
+              id="status"
+              name="status"
+              value={member.status}
+              onChange={handleChange}
+            >
+              <option value="">Seleccionar Estado</option>
+              <option value="Activa">Activa</option>
+              <option value="Suspendida">Suspendida</option>
+              <option value="Finalizada">Finalizada</option>
+            </select>
+          </div>
+          <div className="col-md-6 mb-3">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="form-members-input"
+            />
           </div>
         </div>
-        <div className="">
-          <button type="submit" className="form-members-submit">
-            {btnMember}
-          </button>
-        </div>
+        {imagePreview && (
+          <div className="mb-3">
+            <img
+              src={imagePreview}
+              alt="Vista previa"
+              className="img-preview"
+            />
+          </div>
+        )}
+        <button type="submit" className="form-members-submit">
+          {btnMember}
+        </button>
       </form>
     </div>
   );

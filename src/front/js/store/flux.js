@@ -32,7 +32,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             return false;
           }
           const data = response.json();
-          console.log(data);
           return data;
         } catch (error) {
           console.log(error);
@@ -98,7 +97,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           const data = await response.json();
           if (response.ok) {
-            console.log(data);
             setStore({ users: data });
           }
         } catch (error) {
@@ -282,7 +280,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await response.json();
-          console.log(data);
           if (response.ok) {
             actions.getAllMemberships();
             return true;
@@ -377,8 +374,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (response.ok) {
-            console.log(data);
-
             setStore({ memberships: data.memberships });
           } else {
             console.log(data.error || "Error al obtener miembros del usuario");
@@ -434,7 +429,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await response.json();
-          console.log(data);
           if (response.ok) {
             actions.getAllMemberships();
             return true;
